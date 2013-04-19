@@ -23,13 +23,11 @@ This is an infinite scroll game themed like the little mermaid. The player will 
 	
 > **Evil Tiki Man**
 	The mermaid often swims by the tiki men.  The men move along the ground. They spit balls of fire at the mermaid that take away 1 life.
-	
 	![pkehoe](tikiman.png "Tiki")
 	
 	
 > **Poisonous Sea Weed**
 	This seaweed is on the ground and sways back and forth.  If the mermaid touches it while swimming by, she loses a life.
-	
 	![pkehoe](realseawead.png "seaweed")
 
 ### Game play
