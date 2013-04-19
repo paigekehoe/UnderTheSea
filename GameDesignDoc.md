@@ -10,7 +10,7 @@ This is an infinite scroll game themed like the little mermaid. The player will 
 	
 ### Characters
 > **Mermaid**
-	This is the character controlled by the user/ gameplayer.  
+	This is the character controlled by the user/ game player.  
 	![pkehoe](mermaid.png "The Little Mermaid")
 	
 > **Bubble power**
@@ -23,12 +23,15 @@ This is an infinite scroll game themed like the little mermaid. The player will 
 	
 > **Evil Tiki Man**
 	The mermaid often swims by the tiki men.  The men move along the ground. They spit balls of fire at the mermaid that take away 1 life.
+	
 	![pkehoe](tikiman.png "Tiki")
 	
+	
 > **Poisonous Sea Weed**
-	This seeweed is on the ground and sways back and forth.  If the mermaid touches it while swimming by, she loses a life.
-	![pkehoe](realseaweed.png "seaweed")
+	This seaweed is on the ground and sways back and forth.  If the mermaid touches it while swimming by, she loses a life.
+	
+	![pkehoe](realseawead.png "seaweed")
 
-### Gameplay
+### Game play
 The mermaid starts swimming slowly and she has five lives.  The mermaid's movements are controlled by the up and down arrows on the keyboard. She accumulates points for every 3 seconds that she stays alive.  She also gets bonus points for getting the bubbles and acquiring more lives.  She looses points when she looses lives. She dies when she loses all her lives.  
 
