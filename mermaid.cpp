@@ -1,7 +1,7 @@
 #include "mermaid.h"
 
 Mermaid::Mermaid(): QGraphicsPixmapItem(){ //30, 175, 50, 50){
-	const QPixmap pix("mermaid.png");
+	const QPixmap pix("mermaid_real.png");
 	setPixmap(pix);
 setPos(0, 175);
 	y_=175;
