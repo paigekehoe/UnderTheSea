@@ -1,9 +1,12 @@
 #include "boat.h"
-Boat::Boat(): QGraphicsPixmapItem(){
-	const QPixmap pix("hull.png");
-	setPixmap(pix);
+Boat::Boat(QPixmap *pm, int x, int y): GameItem(p, x, y){
+
 }
 
 Boat::~Boat(){
+
+}
+
+void Boat::move(){
 
 }

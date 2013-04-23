@@ -1,6 +1,9 @@
 #include "bubble.h"
 
-Bubble::Bubble(): QGraphicsPixmapItem(){
-	const QPixmap* p("bubble.png");
-	setPixmap(p)
+Bubble::Bubble(QPixmap *pm, int x, int y): GameItem(p, x, y) {
+
+}
+
+~Bubble::~Bubble(){
+
 }

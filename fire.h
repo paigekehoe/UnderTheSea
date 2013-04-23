@@ -4,10 +4,11 @@
 #include <QtGlobal>
 #include "gameitem.h"
 
-class Shark: public GameItem {
+class Fire: public GameItem {
 	public:
-		Shark(QPixmap *pm, int x, int y);
-		~Shark();
+		Fire(QPixmap* pm, int x, int y);
+		~Fire();
 		void move();
-		void setVel(int cx, int cy);
 };
+
+

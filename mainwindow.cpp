@@ -5,10 +5,12 @@ MainWindow::MainWindow()
 {		level=1;
 		score=0;
 		count=0;
-		scene = new QGraphicsScene(0, 0, WINDOW_MAX_X*2, WINDOW_MAX_Y*2);
+		scene = new QGraphicsScene(0, 0, WINDOW_MAX_X*2+100, WINDOW_MAX_Y*2+100);
 		//creating a new graphics scene
     view = new QGraphicsView();// scene );
-    view->setFixedSize( WINDOW_MAX_X*2+5, WINDOW_MAX_Y*2+5 );
+    view->setFixedSize( WINDOW_MAX_X*2, WINDOW_MAX_Y*2 );
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     mainW = new QMainWindow;
     mainW->setCentralWidget(view);
     mainW->setWindowTitle("Under The Sea");
@@ -17,11 +19,11 @@ MainWindow::MainWindow()
     //setSceneRect( 0, 0, width, height ); 
     //QPainter *p;
     //p->drawPixMap(QRect(0,0,WINDOW_MAX_X*2, WINDOW_MAX_Y*2, back);
-    scene->setBackgroundBrush(back.scaled(WINDOW_MAX_X*2, WINDOW_MAX_Y*2, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    scene->setBackgroundBrush(back.scaled(WINDOW_MAX_X*2+100, WINDOW_MAX_Y*2+100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     view->setScene(scene);
     createStartScreen();
     scene->addWidget(menu);
-    menue->move(100, 200);
+    menu->move(100, 200);
     createMenuArea();
     mainW->addDockWidget(Qt::BottomDockWidgetArea, menuArea);
     createScoreArea();
@@ -131,9 +133,9 @@ void MainWindow::startGame(){
 	timer = new QTimer(this);
 	timer->setInterval(5);
 	connect(timer, SIGNAL(timeout()), this, SLOT(counter()));
-	//if(score==)
 	
-	while(level==1){
+	
+	/*while(level==1){
 		if(count%100==0){
 		Shark *m1 = new Shark;
 		scene->addItem(m1);
@@ -147,7 +149,14 @@ void MainWindow::startGame(){
 	while(level==3){
 	
 	
-	}
+	}*/
+}
+
+//level up function? to increase velocity of monsters?
+
+
+void MainWindo::handleTimer(){
+	//have everything move do move functions
 }
 
 void MainWindow::counter(){
@@ -169,8 +178,14 @@ void MainWindow::pauseGame(){
 	QMessageBox pause;
 	pause.setText("Game is paused");
 	pause.setInformativeText("What would you like to do?");
-	pause.setStandardButtons(QMessageBox::Ok | QMessageBox::Abort);// | QMessageBox::New);
-	pause.setDefaultButton(QMessageBox::Ok);
+	QPushButton* r= new QPushButton("Resume");
+	QPushButton* q = new QPushButton("Quit Game");
+	QPushButton* n = new QPushButton("New Game");
+	pause.addButton(n, QMessageBox::DestructiveRole);
+	pause.addButton(q, QMessageBox::RejectRole);
+	pause.addButton(r, QMessageBox::AcceptRole);
+	// | QMessageBox::New);
+	pause.setDefaultButton(r);
 	pause.exec();
 	
 }
