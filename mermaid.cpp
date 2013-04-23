@@ -3,7 +3,7 @@
 Mermaid::Mermaid(): QGraphicsPixmapItem(){ //30, 175, 50, 50){
 	const QPixmap pix("mermaid_real.png");
 	setPixmap(pix);
-setPos(50, 175);
+	setPos(50, 175);
 	y_=175;
 	setFlag(QGraphicsItem::ItemIsFocusable);
 }

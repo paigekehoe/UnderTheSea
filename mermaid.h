@@ -1,3 +1,6 @@
+#ifndef MERMAID_H
+#define MERMAID_H
+
 #include <QGraphicsItem>
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
@@ -14,3 +17,5 @@ class Mermaid: public QGraphicsPixmapItem {
 		void moveUp();
 		void moveDown();
 };
+
+#endif

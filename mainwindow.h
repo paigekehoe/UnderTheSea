@@ -24,6 +24,7 @@
 #include <QSpinBox>
 #include <QListView>
 #include <QList>
+#include <QLinkedList>
 #include <QLineEdit>
 #include <QMainWindow>
 #include <QVector>
@@ -70,14 +71,18 @@ private:
 		int score;
 		int lives;
 		int count;
+		QLinkedList<GameItem>* on_screen;
 		
 signals:
 	void levelUp();
+	void death();
+	//void  collision signals?
 public slots:
-	void counter();
+	void handleTimer();
 	void loseLife();
 	void gainLife();
 	void scoreFunct(int points);
+	void gameOver();
 	void startGame();
 	void pauseGame();
 	void stopGame();

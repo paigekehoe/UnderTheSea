@@ -33,6 +33,7 @@ MainWindow::MainWindow()
     connect(pause, SIGNAL(clicked()), this, SLOT(pauseGame()));
     connect(stop, SIGNAL(clicked()), this, SLOT(stopGame()));
     connect(quit, SIGNAL(clicked()), this, SLOT(quitGame()));
+		connect(this, SIGNAL(death()), this, SLOT(gameOver()));
 }
 
 MainWindow::~MainWindow()
@@ -128,13 +129,17 @@ void MainWindow::startGame(){
 	scene->addItem(mermaid);
 	qreal x = mermaid->pos().x();
 	qreal y = mermaid->pos().y();
-	
+	mermaid->setFocus();
 	scene->setFocusItem(mermaid);//mainW->setFocus(mermaid);
+	//view->setFocusPolicy(Qt::NoFocus);
+	// NEED TO WRITE MOUSE PRESS EVENTS IN SCREEN 
 	timer = new QTimer(this);
 	timer->setInterval(5);
-	connect(timer, SIGNAL(timeout()), this, SLOT(counter()));
-	
-	
+	connect(timer, SIGNAL(timeout()), this, SLOT(handleTimer()));
+
+		
+
+	}
 	/*while(level==1){
 		if(count%100==0){
 		Shark *m1 = new Shark;
@@ -150,29 +155,86 @@ void MainWindow::startGame(){
 	
 	
 	}*/
-}
+
 
 //level up function? to increase velocity of monsters?
 
 
-void MainWindo::handleTimer(){
+void MainWindow::handleTimer(){
+//check for collisions
+//collides withssssss
+		//boat
+		//shark
+		//fire
+		//bubble
+	/*for(int i=0; i< // list size of thig ; i++){
+			list[i]->move();
+	}*/
 	//have everything move do move functions
-}
-
-void MainWindow::counter(){
+	if(score==2000){
+	//emit level up?
+		//set velocities
+		//every certain number on counter appears sharks and
+			//more sparse appear boats
+			//bubbles every in a blue moon
+	}
+	if(score==5000){
+		//reset velocities
+				//tiki man appears
+			//velocity is incremented for boats and sharks
+			//bubbles more often
+	}
+	if(score==8000){
+		//velocity increases on boats, sharks, and bullets
+			//bubbles less often
+		
+	
+	}
+		if(lives==0){
+		emit death();
+	}
 	scoreFunct(1);
 	count++;
+	score_label->setNum(score);
+	lives_label->setNum(lives);
 }
+
 void MainWindow::loseLife(){
+	lives-=1;
+	lives_label->setNum(lives);
 
 }
 void MainWindow::gainLife(){
+	lives+=1;
+	lives_label->setNum(lives);
 }
 
 void MainWindow::scoreFunct(int points){
 	score+=points;
+	score_label->setNum(score);
 	//NEED TO UPDATE score print out on scene
 }
+
+void MainWindow::gameOver(){
+	QMessageBox loser;
+	loser.setText("GAME OVER. you lose :(");
+	QString str = QString::number(score);
+	QString str1 = "Score: " + str;
+	loser.setInformativeText(str1);
+	QPushButton* r= new QPushButton("Resume");
+	QPushButton* q = new QPushButton("Quit Game");
+	QPushButton* n = new QPushButton("New Game");
+	loser.addButton(n, QMessageBox::DestructiveRole);
+	loser.addButton(q, QMessageBox::RejectRole);
+	loser.addButton(r, QMessageBox::AcceptRole);
+	// | QMessageBox::New);
+	loser.setDefaultButton(r);
+	connect(q, SIGNAL(clicked()), this, SLOT(quitGame()));
+	// CONNECT START GAME
+	//connect(r, SIGNAL(clicked()), this, SLOT(startGame()));
+	loser.exec();
+}
+
 void MainWindow::pauseGame(){
 // NEEDS TO BE FIXED
 	QMessageBox pause;
@@ -186,6 +248,9 @@ void MainWindow::pauseGame(){
 	pause.addButton(r, QMessageBox::AcceptRole);
 	// | QMessageBox::New);
 	pause.setDefaultButton(r);
+	connect(q, SIGNAL(clicked()), this, SLOT(quitGame()));
+	// CONNECT START GAME
+	//connect(r, SIGNAL(clicked()), this, SLOT(startGame()));
 	pause.exec();
 	
 }

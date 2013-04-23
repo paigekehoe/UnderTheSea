@@ -8,5 +8,9 @@ Boat::~Boat(){
 }
 
 void Boat::move(){
+	setPos(x+vX, y);
+}
 
+void Boat::setVel(int cx);{
+	vX=cx;
 }

@@ -1,3 +1,6 @@
+#ifndef SHARK_H
+#define SHARK_H
+
 #include <QGraphicsItem>
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
@@ -11,3 +14,5 @@ class Shark: public GameItem {
 		void move();
 		void setVel(int cx, int cy);
 };
+
+#endif

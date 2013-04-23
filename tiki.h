@@ -1,3 +1,6 @@
+#ifndef TIKI_H
+#define TIKI_H
+
 #include <QGraphicsItem>
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
@@ -9,8 +12,10 @@ class Tiki: public GameItem {
 		Tiki(QPixmap* pm, int x, int y);
 		~Tiki();
 		void move();
-		x_;
-		y_;
+		int x_;
+		int y_; // to be used from fire
 };
+
+#endif
 
 

@@ -1,3 +1,6 @@
+#ifndef BOAT_H
+#define BOAT_H
+
 #include <QGraphicsItem>
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
@@ -9,5 +12,7 @@ class Boat: public GameItem{
 		Boat(QPixmap *pm, int x, int y);
 		~Boat();
 		void move();
+		void setVel(int cx);
 };
 
+#endif
