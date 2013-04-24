@@ -9,11 +9,8 @@
 
 class Tiki: public GameItem {
 	public:
-		Tiki(QPixmap* pm, int x, int y);
-		~Tiki();
+		Tiki(QPixmap* p, int nx, int ny);
 		void move();
-		int x_;
-		int y_; // to be used from fire
 };
 
 #endif

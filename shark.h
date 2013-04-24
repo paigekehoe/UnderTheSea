@@ -9,10 +9,13 @@
 
 class Shark: public GameItem {
 	public:
-		Shark(QPixmap *pm, int x, int y);
+		Shark(QPixmap *pm, int x, int y, int gx, int gy);
 		~Shark();
 		void move();
 		void setVel(int cx, int cy);
+		void setGoals(int wx, int wy);
+		int goalY;
+		int goalX;
 };
 
 #endif

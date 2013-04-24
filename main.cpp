@@ -7,6 +7,11 @@
 *	@section purpose Purpose/Overview
 *	
 */
+void QGraphicsView::scrollContentsBy(int, int)
+{
+    //don't do anything hah!
+}
+
 
 int main(int argc, char *argv[])
 {

@@ -9,8 +9,7 @@
 
 class Bubble: public GameItem {
 	public:
-		Bubble(QPixmap *pm, int x, int y);
-		~Bubble();
+		Bubble(QPixmap *pm, int nx, int ny);
 		void move();
 		int origin;
 		void setVel(int cx, int cy);

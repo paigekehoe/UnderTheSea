@@ -5,12 +5,15 @@ MainWindow::MainWindow()
 {		level=1;
 		score=0;
 		count=0;
+		lives = 5;
+		game_in_play =false;
 		scene = new QGraphicsScene(0, 0, WINDOW_MAX_X*2+100, WINDOW_MAX_Y*2+100);
 		//creating a new graphics scene
     view = new QGraphicsView();// scene );
     view->setFixedSize( WINDOW_MAX_X*2, WINDOW_MAX_Y*2 );
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setSceneRect(WINDOW_MAX_X*2, WINDOW_MAX_Y*2 );
     mainW = new QMainWindow;
     mainW->setCentralWidget(view);
     mainW->setWindowTitle("Under The Sea");
@@ -22,12 +25,13 @@ MainWindow::MainWindow()
     scene->setBackgroundBrush(back.scaled(WINDOW_MAX_X*2+100, WINDOW_MAX_Y*2+100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     view->setScene(scene);
     createStartScreen();
-    scene->addWidget(menu);
-    menu->move(100, 200);
+    //mainW->setDockNestingEnabled(true);
+    mainW->addDockWidget(Qt::TopDockWidgetArea, titleArea);
+    //menu->move(100, 200);
     createMenuArea();
     mainW->addDockWidget(Qt::BottomDockWidgetArea, menuArea);
     createScoreArea();
-    mainW->addDockWidget(Qt::TopDockWidgetArea, scoreArea);
+    //mainW->addDockWidget(Qt::TopDockWidgetArea, scoreArea);
     
     connect(start, SIGNAL(clicked()), this, SLOT(startGame()));
     connect(pause, SIGNAL(clicked()), this, SLOT(pauseGame()));
@@ -43,27 +47,30 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::createStartScreen(){
+	titleArea = new QDockWidget;
 	menu = new QWidget;
 	player_name = new QLineEdit;  //// make start menu
 	QLabel* title = new QLabel(this);
 	QLabel* subtitle = new QLabel(this);
 	QLabel* instructions = new QLabel(this);
-	QPixmap picture("UnderTheSea.png");
+	const QPixmap picture("UnderTheSea.png");
 	title->setPixmap(picture);
 	//title->setMask(picture.mask());
 	title->setAlignment(Qt::AlignTop | Qt::AlignCenter);
-	subtitle->setText("An intereactive Mermaid game!");
+	subtitle->setText("Input player name and press Start to play. Good Luck!");
 	subtitle->setAlignment(Qt::AlignCenter | Qt::AlignCenter);
-	instructions->setText("Input player name and \npress Start to play.\nGood Luck!");
+	//instructions->setText("Input player name and press Start to play. Good Luck!");
 	QLabel * playerName = new QLabel("Name: ", this);
 	playerName->setBuddy(player_name);
 	instructions->setAlignment(Qt::AlignCenter | Qt::AlignCenter);
 	QVBoxLayout *layout = new QVBoxLayout;
 	layout->addWidget(title);
 	layout->addWidget(subtitle);
-	layout->addWidget(instructions);
+	//layout->addWidget(instructions);
 	menu->setLayout(layout);
-	menu->show();
+	titleArea->setWidget(menu);
+	titleArea->setFeatures(QDockWidget::NoDockWidgetFeatures);
+	titleArea->show();
 
 }
 
@@ -79,11 +86,39 @@ void MainWindow::createMenuArea(){
     stop->setFixedHeight(40);
  		quit = new QPushButton("&Quit");
  		quit->setFixedHeight(40);
-    QHBoxLayout *layout = new QHBoxLayout;
-    layout->addWidget(start);
-    layout->addWidget(pause);
-    layout->addWidget(stop);
-    layout->addWidget(quit); 
+    QGridLayout *layout = new QGridLayout;
+    
+    
+    scoreArea = new QDockWidget(this);
+		//QWidget *holder = new QWidget;	
+		//QHBoxLayout *layout = new QHBoxLayout;
+		level_label = new QLabel(this);
+		QLabel* l = new QLabel(this);
+		l->setText("Level: ");
+		level_label->setNum(level); 
+    layout->addWidget(l, 0, 0, Qt::AlignLeft);
+    layout->addWidget(level_label, 0, 1, Qt::AlignLeft);
+    QLabel* v = new QLabel(this);
+    v->setText("Lives: ");
+    lives_label= new QLabel(this);
+    lives_label->setNum(lives);
+    layout->addWidget(v, 0, 2, Qt::AlignLeft);
+    layout->addWidget(lives_label, 0, 3, 0, 4, Qt::AlignLeft);
+    QLabel *s = new QLabel(this);
+    s->setText("Score: ");
+    score_label = new QLabel(this);
+    score_label->setNum(score);
+    layout->addWidget(s, 0, 5, Qt::AlignLeft);
+    layout->addWidget(score_label, 0, 6, Qt::AlignLeft); 
+  	/*holder->setLayout(layout);
+  	scoreArea->setWidget(holder);
+  	scoreArea->setFeatures(QDockWidget::NoDockWidgetFeatures);
+    scoreArea->show();*/
+    
+    layout->addWidget(start, 1, 0, 1, 1, Qt::AlignCenter);
+    layout->addWidget(pause, 1, 2, 1, 3, Qt::AlignCenter);
+    layout->addWidget(stop, 1, 4, 1, 5, Qt::AlignCenter);
+    layout->addWidget(quit, 1, 6, 1, 7, Qt::AlignCenter); 
   	holder->setLayout(layout);
   	menuArea->setWidget(holder);
   	menuArea->setFeatures(QDockWidget::NoDockWidgetFeatures);
@@ -92,7 +127,7 @@ void MainWindow::createMenuArea(){
 
 void MainWindow::createScoreArea(){
 // LEFT OFF HERE MAKING THE WORDS THAT YOU NEED!!!
-		scoreArea = new QDockWidget(this);
+		/*scoreArea = new QDockWidget(this);
 		QWidget *holder = new QWidget;	
 		QHBoxLayout *layout = new QHBoxLayout;
 		level_label = new QLabel(this);
@@ -116,7 +151,7 @@ void MainWindow::createScoreArea(){
   	holder->setLayout(layout);
   	scoreArea->setWidget(holder);
   	scoreArea->setFeatures(QDockWidget::NoDockWidgetFeatures);
-    scoreArea->show();
+    scoreArea->show();*/
 }
 void MainWindow::show(){
 	mainW->show();
@@ -124,6 +159,7 @@ void MainWindow::show(){
 }
 
 void MainWindow::startGame(){
+	game_in_play = true;
 	cout << "start game" << endl;
 	mermaid = new Mermaid;
 	scene->addItem(mermaid);
@@ -132,11 +168,16 @@ void MainWindow::startGame(){
 	mermaid->setFocus();
 	scene->setFocusItem(mermaid);//mainW->setFocus(mermaid);
 	//view->setFocusPolicy(Qt::NoFocus);
+	
+	/*shark_pic = new Pixmap("sharky.png");
+	bubble_pic = new Pixmap("power.png");
+	fire_pic = new Pixmap("fire.png");
+	boat_pic = new Pixmap("hull.png");*/
 	// NEED TO WRITE MOUSE PRESS EVENTS IN SCREEN 
 	timer = new QTimer(this);
 	timer->setInterval(5);
 	connect(timer, SIGNAL(timeout()), this, SLOT(handleTimer()));
-
+	timer->start();
 		
 
 	}
@@ -161,14 +202,36 @@ void MainWindow::startGame(){
 
 
 void MainWindow::handleTimer(){
+	bool shark_here = 0;
 //check for collisions
 //collides withssssss
 		//boat
 		//shark
 		//fire
 		//bubble
-	/*for(int i=0; i< // list size of thig ; i++){
-			list[i]->move();
+	int createS =rand()%4;
+	switch(createS){
+		case 0:
+			//Shark *s1 = new Shark(shark_pic, rand()%500, rand()%900, 50, mermaid->y_);
+			//sharks.push_back(s1);
+			//on_screen.push_back(s1);
+			break;
+		case 1:
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+		break;
+	}
+	/*QLinkedList<GameItem*>::iterator it;
+	for(it=on_screen.begin(); it!=on_screen.end(); ++it){
+			*it->move();
+	}
+	QVector<Shark*>::iterator it2;
+	for(it2=sharks.begin(); it!=sharks.end(); ++it){
+		it2->setGoals(50, mermaid->y_);
 	}*/
 	//have everything move do move functions
 	if(score==2000){
@@ -181,6 +244,9 @@ void MainWindow::handleTimer(){
 	if(score==5000){
 		//reset velocities
 				//tiki man appears
+				QPixmap *tiki_pic=new QPixmap("tiki.png");
+				tiki = new Tiki(tiki_pic, 550, 350);
+				scene->addItem(tiki);
 			//velocity is incremented for boats and sharks
 			//bubbles more often
 	}
@@ -190,10 +256,12 @@ void MainWindow::handleTimer(){
 		
 	
 	}
-		if(lives==0){
+	if(lives==0){
 		emit death();
 	}
-	scoreFunct(1);
+	if(count%400==0){
+		scoreFunct(1);
+	}
 	count++;
 	score_label->setNum(score);
 	lives_label->setNum(lives);
@@ -237,6 +305,7 @@ void MainWindow::gameOver(){
 
 void MainWindow::pauseGame(){
 // NEEDS TO BE FIXED
+	timer->stop();
 	QMessageBox pause;
 	pause.setText("Game is paused");
 	pause.setInformativeText("What would you like to do?");
@@ -251,6 +320,7 @@ void MainWindow::pauseGame(){
 	connect(q, SIGNAL(clicked()), this, SLOT(quitGame()));
 	// CONNECT START GAME
 	//connect(r, SIGNAL(clicked()), this, SLOT(startGame()));
+	connect(r, SIGNAL(clicked()), this, SLOT(resumeTime()));
 	pause.exec();
 	
 }
@@ -262,4 +332,18 @@ void MainWindow::quitGame(){
 	//quitting game
 	QApplication::quit();
 	//BYE BYE
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *k){
+	if(game_in_play=true){
+		mermaid->keyPressEvent(k);
+	}
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *e){
+	return;
+}
+
+void MainWindow::resumeTime(){
+	timer->start();
 }

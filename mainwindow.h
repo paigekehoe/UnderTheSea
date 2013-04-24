@@ -10,6 +10,7 @@
 #include <QCoreApplication>
 #include <QDockWidget>
 #include <QMessageBox>
+#include <QPixmap>
 #include <QGraphicsRectItem>
 #include <QPushButton>
 #include <QHBoxLayout>
@@ -32,13 +33,15 @@
 #include <iostream>
 #include "shark.h"
 #include "tiki.h"
+#include "fire.h"
 #include "bubble.h"
 #include "mermaid.h"
 #include "boat.h"
+#include "gameitem.h"
 
 
 #define WINDOW_MAX_X 400
-#define WINDOW_MAX_Y 250
+#define WINDOW_MAX_Y 200
 
 class MainWindow : public QWidget {
     Q_OBJECT
@@ -50,6 +53,9 @@ public:
     ~MainWindow();
 		/** a function to show the MainWindow and all of its components */
     void show();
+protected:
+	void keyPressEvent(QKeyEvent *k);
+	void mousePressEvent(QMouseEvent *e);
 private:
 		void createStartScreen();
 		void createMenuArea();
@@ -59,19 +65,23 @@ private:
     /** QGraphicsView for the scene */
     QGraphicsView *view;
 		QMainWindow *mainW; 
-		QDockWidget *menuArea, *scoreArea;
+		QDockWidget *menuArea, *scoreArea, *titleArea;
 		QPushButton	*start, *pause, *stop, *quit;
 		QWidget *menu;
 		QLineEdit *player_name;
 		Mermaid *mermaid;
+		Tiki *tiki;
 		QTimer* timer;
 		QLabel	*level_label, *lives_label, *score_label;
+		QPixmap *shark_pic, *bubble_pic, *fire_pic, *boat_pic;
 		//QVector<QGraphicsPixmapItem> on_screen;
 		int level;
 		int score;
 		int lives;
 		int count;
-		QLinkedList<GameItem>* on_screen;
+		bool game_in_play;
+		QLinkedList<GameItem*> on_screen;
+		QVector<Shark*> sharks;
 		
 signals:
 	void levelUp();
@@ -87,6 +97,8 @@ public slots:
 	void pauseGame();
 	void stopGame();
 	void quitGame();
+	void resumeTime();
 };
+
 
 #endif

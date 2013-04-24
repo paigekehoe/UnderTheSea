@@ -1,11 +1,7 @@
 #include "bubble.h"
 
-Bubble::Bubble(QPixmap *pm, int x, int y): GameItem(p, x, y) {
-	origin =y;
-}
-
-~Bubble::~Bubble(){
-
+Bubble::Bubble(QPixmap *pm, int nx, int ny): GameItem(pm, nx, ny) {
+	origin=ny;
 }
 
 void Bubble::move(){

@@ -9,13 +9,13 @@
 
 class Fire: public GameItem {
 	public:
-		Fire(QPixmap* pm, int x, int y, int gx, int gy);
+		Fire(QPixmap* pm, int x, int y, int gy);
 		~Fire();
 		void move();
-		void setVel();
+		void setVel(int cx, int cy);
 		//mermaid's loc
-		int goalX;
 		int goalY;
+		int m;
 };
 
 #endif
