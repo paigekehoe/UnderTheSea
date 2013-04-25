@@ -15,6 +15,7 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QTextEdit>
+#include <QGraphicsItem>
 #include <QColor>
 #include <QLabel> 
 #include <QtGlobal>
@@ -57,9 +58,9 @@ protected:
 	void keyPressEvent(QKeyEvent *k);
 	void mousePressEvent(QMouseEvent *e);
 private:
-		void createStartScreen();
+		void createTitle();
 		void createMenuArea();
-		void createScoreArea();
+		void createStartArea();
 		/** scene for gameplay*/
     QGraphicsScene *scene;
     /** QGraphicsView for the scene */
@@ -96,6 +97,7 @@ public slots:
 	void gameOver();
 	void startGame();
 	void pauseGame();
+	void newGame();
 	void stopGame();
 	void quitGame();
 	void resumeTime();

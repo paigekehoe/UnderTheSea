@@ -21,7 +21,7 @@ MainWindow::MainWindow()
     //MAKE BACKGROUND WITH THING
     QPixmap back("water.jpg");
     //createStartScreen();
-     createScoreArea();
+     createStartArea();
     //graphicsView->setAlignment( Qt::AlignLeft | Qt::AlignTop
     //setSceneRect( 0, 0, width, height ); 
     //QPainter *p;
@@ -29,20 +29,21 @@ MainWindow::MainWindow()
     scene->setBackgroundBrush(back.scaled(WINDOW_MAX_X*2+100, WINDOW_MAX_Y*2+100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     view->setScene(scene);
     //scene->addItem
-    scene->addWidget(w);
-    scene->addWidget(welcome);
-    createStartScreen();
+    //scene->addWidget(w);
+    createTitle();
     //mainW->setDockNestingEnabled(true);
     mainW->addDockWidget(Qt::TopDockWidgetArea, titleArea);
     //menu->move(100, 200);
     createMenuArea();
     mainW->addDockWidget(Qt::BottomDockWidgetArea, menuArea);
+    scene->addWidget(welcome);
+    welcome->move(135, 100);
    
     //mainW->addDockWidget(Qt::TopDockWidgetArea, scoreArea);
     
     connect(start, SIGNAL(clicked()), this, SLOT(startGame()));
     connect(pause, SIGNAL(clicked()), this, SLOT(pauseGame()));
-    connect(stop, SIGNAL(clicked()), this, SLOT(stopGame()));
+    connect(stop, SIGNAL(clicked()), this, SLOT(newGame()));
     connect(quit, SIGNAL(clicked()), this, SLOT(quitGame()));
 		connect(this, SIGNAL(death()), this, SLOT(gameOver()));
 }
@@ -53,7 +54,7 @@ MainWindow::~MainWindow()
 	delete view;
 }
 
-void MainWindow::createStartScreen(){
+void MainWindow::createTitle(){
 	titleArea = new QDockWidget;
 	menu = new QWidget;
 	player_name = new QLineEdit;  //// make start menu
@@ -135,8 +136,8 @@ void MainWindow::createMenuArea(){
     menuArea->show();
 }
 
-void MainWindow::createScoreArea(){
-
+void MainWindow::createStartArea(){
+		QVBoxLayout * layout = new QVBoxLayout;
 		//welcome = new QDockWidget;
 		welcome = new QWidget;
 		w = new QLabel(this);
@@ -144,38 +145,14 @@ void MainWindow::createScoreArea(){
 		w->setPixmap(welcome_screen);
 		//scene->addWidget(welcome);
 		player_name = new QLineEdit();
-		//welcome->
-		//welcome->addItem(w);
-		//welcome->addWidget(player_name);
-		//welcome->setWidget(holder);
-		//welcome->setFeatures(QDockWidget::NoDockWidgetFeatures);
-		//welcome->show();
-// LEFT OFF HERE MAKING THE WORDS THAT YOU NEED!!!
-		/*scoreArea = new QDockWidget(this);
-		QWidget *holder = new QWidget;	
-		QHBoxLayout *layout = new QHBoxLayout;
-		level_label = new QLabel(this);
-		QLabel* l = new QLabel(this);
-		l->setText("	Level: ");
-		level_label->setNum(level); 
-    layout->addWidget(l);
-    layout->addWidget(level_label);
-    QLabel* v = new QLabel(this);
-    v->setText("	Lives: ");
-    lives_label= new QLabel(this);
-    lives_label->setNum(lives);
-    layout->addWidget(v);
-    layout->addWidget(lives_label);
-    QLabel *s = new QLabel(this);
-    s->setText("	Score: ");
-    score_label = new QLabel(this);
-    score_label->setNum(score);
-    layout->addWidget(s);
-    layout->addWidget(score_label); 
-  	holder->setLayout(layout);
-  	scoreArea->setWidget(holder);
-  	scoreArea->setFeatures(QDockWidget::NoDockWidgetFeatures);
-    scoreArea->show();*/
+		//connect(player_name, SIGNAL(returnPressed()), this, SLOT(startGame()));
+// NEED TO FIGURE OUT HOW TO CONNECT ENTER W/O SEG FALUTIN
+		
+		layout->addWidget(w);
+		layout->addWidget(player_name);
+		welcome->setLayout(layout);
+		welcome->show();
+		
 }
 void MainWindow::show(){
 	mainW->show();
@@ -183,7 +160,16 @@ void MainWindow::show(){
 }
 
 void MainWindow::startGame(){
-	scene->clear();
+	//SOMETIMES DOES NOT CATCH TEXT?? WHY
+	if(player_name->text().isEmpty()){
+		QMessageBox error;
+		error.setText("Please input user name!");
+		error.exec();
+		delete welcome;
+		stopGame();
+		return;
+	}
+	delete welcome;
 	game_in_play = true;
 	cout << "start game" << endl;
 	mermaid = new Mermaid;
@@ -267,6 +253,9 @@ void MainWindow::handleTimer(){
 		//every certain number on counter appears sharks and
 			//more sparse appear boats
 			//bubbles every in a blue moon
+			QPixmap *tiki_pic=new QPixmap("tiki.png");
+			tiki = new Tiki(tiki_pic, 550, 350);
+			scene->addItem(tiki);
 	}
 	if(score==5000){
 		sharkVelX=3;
@@ -279,9 +268,7 @@ void MainWindow::handleTimer(){
 		levelUp();
 		//reset velocities
 				//tiki man appears
-				QPixmap *tiki_pic=new QPixmap("tiki.png");
-				tiki = new Tiki(tiki_pic, 550, 350);
-				scene->addItem(tiki);
+				
 			//velocity is incremented for boats and sharks
 			//bubbles more often
 	}
@@ -356,6 +343,12 @@ void MainWindow::handleTimer(){
 				break;
 			}
 		}
+	}
+	if(level>=2&&count%30==0){
+		//shoot fire!
+		Fire *f = new Fire(fire_pic, 550, 350, mermaid->pos().y());
+		f->setVel(fireVelX, fireVelY);
+		on_screen.push_back(f);
 	}
 	QLinkedList<GameItem*>::iterator it;
 	for(it=on_screen.begin(); it!=on_screen.end(); ++it){
@@ -465,14 +458,27 @@ void MainWindow::pauseGame(){
 	pause.setDefaultButton(r);
 	connect(q, SIGNAL(clicked()), this, SLOT(quitGame()));
 	// CONNECT START GAME
-	//connect(r, SIGNAL(clicked()), this, SLOT(startGame()));
+	connect(n, SIGNAL(clicked()), this, SLOT(newGame()));
 	connect(r, SIGNAL(clicked()), this, SLOT(resumeTime()));
 	pause.exec();
 	
 }
 
 void MainWindow::stopGame(){
+	createStartArea();
+	scene->addWidget(welcome);
+	welcome->move(135, 100);
+	game_in_play=false;
 	cout << "stop game" << endl;
+}
+
+void MainWindow::newGame(){
+	scene->clear();
+	delete timer;
+	sharks.clear();
+	on_screen.clear();
+	stopGame();
+
 }
 void MainWindow::quitGame(){
 	//quitting game
