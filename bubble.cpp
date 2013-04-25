@@ -3,6 +3,7 @@
 Bubble::Bubble(QPixmap *pm, int nx, int ny): GameItem(pm, nx, ny) {
 	origin=ny;
 	isBubble=true;
+	isShark=false;
 }
 
 void Bubble::move(){

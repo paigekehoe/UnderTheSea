@@ -81,6 +81,7 @@ private:
 		int score;
 		int lives;
 		int count;
+		bool shark_here;
 		bool game_in_play;
 		QLinkedList<GameItem*> on_screen;
 		QLinkedList<Shark*> sharks;
@@ -92,6 +93,7 @@ public slots:
 	void handleTimer();
 	void loseLife();
 	void gainLife();
+	void collision(GameItem* item);
 	void scoreFunct(int points);
 	void levelUp();
 	void gameOver();

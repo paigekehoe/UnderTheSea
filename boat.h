@@ -13,6 +13,7 @@ class Boat: public GameItem{
 		~Boat();
 		void move();
 		void setVel(int cx);
+		bool onScreen();
 };
 
 #endif

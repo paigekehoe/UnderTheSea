@@ -7,6 +7,9 @@ using namespace std;
 		//work on connecting enter - thats annoying
 	//deleting items that go off screen and fixing lives
 	//Shark movement == weird!!! ew fix.
+	//connect game over
+	// FIX message box for entering name
+	// TRIG FOR SHARK FUNCTION
 
 MainWindow::MainWindow()
 {		level=1;
@@ -20,7 +23,7 @@ MainWindow::MainWindow()
     view->setFixedSize( WINDOW_MAX_X*2, WINDOW_MAX_Y*2 );
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    //view->setSceneRect(QRectF(WINDOW_MAX_X*2, WINDOW_MAX_Y*2));
+    view->setSceneRect(50, 50, WINDOW_MAX_X*2, WINDOW_MAX_Y*2);
     mainW = new QMainWindow;
     mainW->setCentralWidget(view);
     mainW->setWindowTitle("Under The Sea");
@@ -86,6 +89,10 @@ void MainWindow::createTitle(){
 	titleArea->setWidget(menu);
 	titleArea->setFeatures(QDockWidget::NoDockWidgetFeatures);
 	titleArea->show();
+	QString tempStr = player_name->text();
+	if(tempStr==""){
+		//do nothing
+	}
 
 }
 
@@ -168,7 +175,10 @@ void MainWindow::show(){
 
 void MainWindow::startGame(){
 	//SOMETIMES DOES NOT CATCH TEXT?? WHY
-	if(player_name->text().isEmpty()){
+	string name;
+	QString temp =player_name->text();
+	name= temp.toStdString();
+	if(name==""){
 		QMessageBox error;
 		error.setText("Please input user name!");
 		error.exec();
@@ -177,6 +187,8 @@ void MainWindow::startGame(){
 		return;
 	}
 	delete welcome;
+	on_screen.clear();
+	//sharks.clear();
 	game_in_play = true;
 	cout << "start game" << endl;
 	mermaid = new Mermaid;
@@ -223,7 +235,7 @@ void MainWindow::startGame(){
 
 void MainWindow::handleTimer(){
 	cout << " HI!" << endl;
-	bool shark_here = false;
+	shark_here = false;
 //check for collisions
 //collides withssssss
 		//boat
@@ -246,7 +258,7 @@ void MainWindow::handleTimer(){
 		fireVelX=1;
 	}
 	//have everything move do move functions
-	if(score==2000){
+	if(score==20){
 			sharkVelX=2;
 		sharkVelY=2;
 		bubbleVelX=2;
@@ -264,7 +276,7 @@ void MainWindow::handleTimer(){
 			tiki = new Tiki(tiki_pic, 550, 350);
 			scene->addItem(tiki);
 	}
-	if(score==5000){
+	if(score==50){
 		sharkVelX=3;
 		sharkVelY=3;
 		bubbleVelX=2;
@@ -279,7 +291,7 @@ void MainWindow::handleTimer(){
 			//velocity is incremented for boats and sharks
 			//bubbles more often
 	}
-	if(score==8000){
+	if(score==80){
 		sharkVelX=4;
 		sharkVelY=4;
 		bubbleVelX=2;
@@ -294,16 +306,18 @@ void MainWindow::handleTimer(){
 	if(count%200==0){
 		cout << "Lets switch" << endl;
 		int createS =rand()%6;
+		cout << "rand: " << createS << endl;
 		switch(createS){
 			case 0:{
 				Shark *s1 = new Shark(shark_pic, 900, rand()%500, 50, mermaid->y_);
 				scene->addItem(s1);
-				sharks.push_back(s1);
+				//sharks.push_back(s1);
 				on_screen.push_back(s1);
 				s1->setVel(sharkVelX, sharkVelY);
 				shark_here = true;
 				break;}
 			case 1:{
+				cout << "BUBBLE" << endl;
 				Bubble *b1 = new Bubble(bubble_pic, 900, rand()%500);
 				scene->addItem(b1);
 				on_screen.push_back(b1);
@@ -312,13 +326,13 @@ void MainWindow::handleTimer(){
 			case 2:{
 				Shark *s2 = new Shark(shark_pic, 900, rand()%500, 50, mermaid->y_);
 				scene->addItem(s2);
-				sharks.push_back(s2);
+				//sharks.push_back(s2);
 				on_screen.push_back(s2);
 				s2->setVel(sharkVelX, sharkVelY);
 				shark_here = true;
 				break;}
 			case 3:{
-				Boat *bt = new Boat(boat_pic, 900, 30);
+				Boat *bt = new Boat(boat_pic, 900, 50);
 				scene->addItem(bt);
 				on_screen.push_back(bt);
 				bt->setVel(boatVelY);
@@ -326,7 +340,7 @@ void MainWindow::handleTimer(){
 			case 4:{
 				Shark *s3 = new Shark(shark_pic, 900, rand()%500, 50, mermaid->y_);
 				scene->addItem(s3);
-				sharks.push_back(s3);
+				//sharks.push_back(s3);
 				on_screen.push_back(s3);
 				s3->setVel(sharkVelX, sharkVelY);
 				shark_here = true;
@@ -334,7 +348,7 @@ void MainWindow::handleTimer(){
 			case 5:{
 					Shark *s4 = new Shark(shark_pic,900, rand()%500, 50, mermaid->y_);
 				scene->addItem(s4);
-				sharks.push_back(s4);
+				//sharks.push_back(s4);
 				on_screen.push_back(s4);
 				s4->setVel(sharkVelX, sharkVelY);
 				shark_here = true;
@@ -343,7 +357,7 @@ void MainWindow::handleTimer(){
 			case 6:{
 				Shark *s5 = new Shark(shark_pic, 900, rand()%500, 50, mermaid->y_);
 				scene->addItem(s5);
-				sharks.push_back(s5);
+				//sharks.push_back(s5);
 				on_screen.push_back(s5);
 				s5->setVel(sharkVelX, sharkVelY);
 				shark_here = true;
@@ -351,7 +365,7 @@ void MainWindow::handleTimer(){
 			}
 		}
 	}
-	if(level>=2&&count%30==0){
+	if(level>=2&&count%10==0){
 		//shoot fire!
 		Fire *f = new Fire(fire_pic, 550, 350, mermaid->pos().y());
 		f->setVel(fireVelX, fireVelY);
@@ -361,30 +375,51 @@ void MainWindow::handleTimer(){
 	for(it=on_screen.begin(); it!=on_screen.end(); ++it){
 	cout << "for loop!" << endl;
 			(*it)->move();
+			
 			if((*it)->collidesWithItem(mermaid)){
-				if((*it)->isBubble==true){ // if it is a bubble? could make a b function for all
+				collision(*it);}
+	/*			if((*it)->isBubble==true){ // if it is a bubble? could make a b function for all
 					//also could make a bool for x is positive?? that would be cool
 					gainLife();
-					scoreFunct(100);
+					scoreFunct(10);
 				}
 				else{
+					//could remove the moster from the screen
+					if((*it)->isShark==true){
+						// remove from screen and take off shark sharks
+						//scene->removeItem(*it);
+						//sharks.erase(it);
+						
+					}
+					//it=on_screen.erase(it);
 					loseLife();
 				}
+			}*/
+	}
+	if(count%15==0){
+		QLinkedList<GameItem*>::iterator it;
+		for(it=on_screen.begin(); it!=on_screen.end(); ++it){
+	
+				(*it)->setGoals(50, mermaid->pos().y());
 			}
 	}
-	for(it=on_screen.begin(); it!=on_screen.end(); ++it){
-		if((*it)->onScreen()==false){
+	QLinkedList<GameItem*>::iterator it3;
+	it3=on_screen.begin();
+	while(it3!=on_screen.end()){
+		if((*it3)->onScreen()==false){
 				cout << "removing item?" << endl;
-				scene->removeItem((*it));
+				scene->removeItem(*it3);
 				cout << "ope" << endl;
-				on_screen.erase(it);
+				it3= on_screen.erase(it3);
 				cout << "MAH" << endl;
 				//++it; //could be wrong
 				// remove from linked list and delete
 			}
+		else
+			++it3;
 	}
 	
-	if(shark_here==true&&count%30==0){
+	/*if(shark_here==true&&count%10==0){
 	int i=0;
 		QLinkedList<Shark*>::iterator it2;
 		for(it2=sharks.begin(); it2!=sharks.end(); ++it2){
@@ -395,14 +430,15 @@ void MainWindow::handleTimer(){
 		if(i==0){
 			shark_here=false;
 		}
-	}
+	}*/
 	if(lives==0){
+		cout << "lives = 0" << endl;
 		emit death();
 	}
-	if(count%400==0){
+	if(count%100==0){
 		scoreFunct(1);
 	}
-	count+=1;
+	count++;
 	score_label->setNum(score);
 	lives_label->setNum(lives);
 	cout << "all done!" << endl;
@@ -410,13 +446,49 @@ void MainWindow::handleTimer(){
 
 void MainWindow::loseLife(){
 	lives-=1;
-	scoreFunct(-100);
+	cout << "losing lives, lives =: " << lives << endl;
+	scoreFunct(-10);
 	lives_label->setNum(lives);
 
 }
 void MainWindow::gainLife(){
+	cout << "gaining lives, lives =: " << lives << endl;
 	lives+=1;
 	lives_label->setNum(lives);
+}
+
+void MainWindow::collision(GameItem *item){
+	timer->stop();
+	scene->removeItem(item);
+	on_screen.removeOne(item);
+	if(item->isBubble==true){ // if it is a bubble? could make a b function for all
+	//also could make a bool for x is positive?? that would be cool
+					gainLife();
+					scoreFunct(10);
+	}
+	else{
+		loseLife();
+					//could remove the moster from the screen
+			/*if(item->isShark==true){
+				QLinkedList<Shark*>::iterator i;
+				i=sharks.begin();
+				while( i!=sharks.end()){
+						if(&i==&item){
+							i=sharks.erase(i);
+						}
+						else
+							++i;
+				}*/
+					//sharks.removeOne(*it);
+			}		
+			/*if(sharks.empty()==true){
+							shark_here=false;
+			}*/	// remove from screen and take off shark sharks
+						//scene->removeItem(*it);
+						//sharks.erase(it);	
+								//it=on_screen.erase(it);
+						
+	timer->start();
 }
 
 void MainWindow::scoreFunct(int points){
@@ -430,22 +502,22 @@ void MainWindow::levelUp(){
 	level_label->setNum(level);
 }
 void MainWindow::gameOver(){
+	delete timer;
 	QMessageBox loser;
 	loser.setText("GAME OVER. you lose :(");
 	QString str = QString::number(score);
 	QString str1 = "Score: " + str;
 	loser.setInformativeText(str1);
-	QPushButton* r= new QPushButton("Resume");
+	//QPushButton* r= new QPushButton("Resume");
 	QPushButton* q = new QPushButton("Quit Game");
 	QPushButton* n = new QPushButton("New Game");
 	loser.addButton(n, QMessageBox::DestructiveRole);
 	loser.addButton(q, QMessageBox::RejectRole);
-	loser.addButton(r, QMessageBox::AcceptRole);
 	// | QMessageBox::New);
-	loser.setDefaultButton(r);
+	loser.setDefaultButton(q);
 	connect(q, SIGNAL(clicked()), this, SLOT(quitGame()));
 	// CONNECT START GAME
-	//connect(r, SIGNAL(clicked()), this, SLOT(startGame()));
+	connect(n, SIGNAL(clicked()), this, SLOT(newGame()));
 	loser.exec();
 }
 
@@ -482,7 +554,7 @@ void MainWindow::stopGame(){
 void MainWindow::newGame(){
 	scene->clear();
 	delete timer;
-	sharks.clear();
+	//sharks.clear();
 	on_screen.clear();
 	stopGame();
 
