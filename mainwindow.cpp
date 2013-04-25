@@ -1,6 +1,13 @@
 #include "mainwindow.h"
 using namespace std;
 
+//ISSUES TO BE FIXED
+	//scrolling - weird;
+	//not getting first thing entered in QLineEdit? weird also could
+		//work on connecting enter - thats annoying
+	//deleting items that go off screen and fixing lives
+	//Shark movement == weird!!! ew fix.
+
 MainWindow::MainWindow()
 {		level=1;
 		score=0;
