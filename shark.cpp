@@ -15,11 +15,36 @@ void Shark::move(){
 		x-=vX;
 		y-=vY;
 	}
-	else if (y<goalY){
+	else if (y<=goalY){
 		setPos(x-vX, y+vY);
 		x-=vX;
 		y+=vY;
-	} ///velocity == number incremented by
+	} 
+	/*else i(y=goalY){
+		setPos(x-vX, y+vY);
+		x-=vX;
+		y+=vY;
+		} /*
+		int r = rand()%2;
+		switch(r){
+			case 0: 
+				setPos(x-vX, y+vY);
+				x-=vX;
+				y+=vY;
+				break;
+			case 1:
+				setPos(x-vX, y-vY);
+				x-=vX;
+				y-=vY;
+				break;
+			case 2:
+				setPos(x-vX, y);
+				x-=vX;
+				break;
+			}*/
+	
+	
+	///velocity == number incremented by
 	//increment dunction adding velocity to respective x and y
 
 }

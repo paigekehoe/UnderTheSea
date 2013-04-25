@@ -67,13 +67,14 @@ private:
 		QMainWindow *mainW; 
 		QDockWidget *menuArea, *scoreArea, *titleArea;
 		QPushButton	*start, *pause, *stop, *quit;
-		QWidget *menu;
+		QWidget *menu, *welcome;
 		QLineEdit *player_name;
 		Mermaid *mermaid;
 		Tiki *tiki;
 		QTimer* timer;
-		QLabel	*level_label, *lives_label, *score_label;
-		QPixmap *shark_pic, *bubble_pic, *fire_pic, *boat_pic;
+		QLabel	*level_label, *lives_label, *score_label, *w;
+		QPixmap *shark_pic, *bubble_pic, *fire_pic, *boat_pic;//, *welcome_screen;
+		QLineEdit *playerName;
 		//QVector<QGraphicsPixmapItem> on_screen;
 		int level;
 		int score;

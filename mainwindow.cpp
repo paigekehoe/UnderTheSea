@@ -5,7 +5,7 @@ MainWindow::MainWindow()
 {		level=1;
 		score=0;
 		count=0;
-		lives = 5;
+		lives=5;
 		game_in_play =false;
 		scene = new QGraphicsScene(0, 0, WINDOW_MAX_X*2+100, WINDOW_MAX_Y*2+100);
 		//creating a new graphics scene
@@ -19,21 +19,25 @@ MainWindow::MainWindow()
     mainW->setWindowTitle("Under The Sea");
     
     //MAKE BACKGROUND WITH THING
-    
     QPixmap back("water.jpg");
+    //createStartScreen();
+     createScoreArea();
     //graphicsView->setAlignment( Qt::AlignLeft | Qt::AlignTop
     //setSceneRect( 0, 0, width, height ); 
     //QPainter *p;
     //p->drawPixMap(QRect(0,0,WINDOW_MAX_X*2, WINDOW_MAX_Y*2, back);
     scene->setBackgroundBrush(back.scaled(WINDOW_MAX_X*2+100, WINDOW_MAX_Y*2+100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     view->setScene(scene);
+    //scene->addItem
+    scene->addWidget(w);
+    scene->addWidget(welcome);
     createStartScreen();
     //mainW->setDockNestingEnabled(true);
     mainW->addDockWidget(Qt::TopDockWidgetArea, titleArea);
     //menu->move(100, 200);
     createMenuArea();
     mainW->addDockWidget(Qt::BottomDockWidgetArea, menuArea);
-    createScoreArea();
+   
     //mainW->addDockWidget(Qt::TopDockWidgetArea, scoreArea);
     
     connect(start, SIGNAL(clicked()), this, SLOT(startGame()));
@@ -78,17 +82,20 @@ void MainWindow::createStartScreen(){
 }
 
 void MainWindow::createMenuArea(){
-		scene->clear();
 		menuArea = new QDockWidget(this);
 		QWidget *holder = new QWidget;	
     start = new QPushButton("&Start");
-    start->setFixedHeight(40);
+   	start->setFixedHeight(40);
+   	start->setFixedWidth(160);
     pause = new QPushButton("&Pause");
     pause->setFixedHeight(40);
+    pause->setFixedWidth(160);
     stop = new QPushButton("End Game");
-    stop->setFixedHeight(40);
+   	stop->setFixedHeight(40);
+   	stop->setFixedWidth(160);
  		quit = new QPushButton("&Quit");
  		quit->setFixedHeight(40);
+ 		quit->setFixedWidth(160);
     QGridLayout *layout = new QGridLayout;
     
     
@@ -106,7 +113,7 @@ void MainWindow::createMenuArea(){
     lives_label= new QLabel(this);
     lives_label->setNum(lives);
     layout->addWidget(v, 0, 2, Qt::AlignLeft);
-    layout->addWidget(lives_label, 0, 3, 0, 4, Qt::AlignLeft);
+    layout->addWidget(lives_label, 0, 3,Qt::AlignLeft);
     QLabel *s = new QLabel(this);
     s->setText("Score: ");
     score_label = new QLabel(this);
@@ -118,10 +125,10 @@ void MainWindow::createMenuArea(){
   	scoreArea->setFeatures(QDockWidget::NoDockWidgetFeatures);
     scoreArea->show();*/
     
-    layout->addWidget(start, 1, 0, 1, 1, Qt::AlignCenter);
-    layout->addWidget(pause, 1, 2, 1, 3, Qt::AlignCenter);
-    layout->addWidget(stop, 1, 4, 1, 5, Qt::AlignCenter);
-    layout->addWidget(quit, 1, 6, 1, 7, Qt::AlignCenter); 
+    layout->addWidget(start, 1, 0, Qt::AlignCenter);
+    layout->addWidget(pause, 1, 2, Qt::AlignCenter);
+    layout->addWidget(stop, 1, 4, Qt::AlignCenter);
+    layout->addWidget(quit, 1, 6, Qt::AlignCenter); 
   	holder->setLayout(layout);
   	menuArea->setWidget(holder);
   	menuArea->setFeatures(QDockWidget::NoDockWidgetFeatures);
@@ -129,6 +136,20 @@ void MainWindow::createMenuArea(){
 }
 
 void MainWindow::createScoreArea(){
+
+		//welcome = new QDockWidget;
+		welcome = new QWidget;
+		w = new QLabel(this);
+		const QPixmap welcome_screen("welcome.png");
+		w->setPixmap(welcome_screen);
+		//scene->addWidget(welcome);
+		player_name = new QLineEdit();
+		//welcome->
+		//welcome->addItem(w);
+		//welcome->addWidget(player_name);
+		//welcome->setWidget(holder);
+		//welcome->setFeatures(QDockWidget::NoDockWidgetFeatures);
+		//welcome->show();
 // LEFT OFF HERE MAKING THE WORDS THAT YOU NEED!!!
 		/*scoreArea = new QDockWidget(this);
 		QWidget *holder = new QWidget;	
@@ -162,6 +183,7 @@ void MainWindow::show(){
 }
 
 void MainWindow::startGame(){
+	scene->clear();
 	game_in_play = true;
 	cout << "start game" << endl;
 	mermaid = new Mermaid;
@@ -178,7 +200,7 @@ void MainWindow::startGame(){
 	boat_pic = new QPixmap("hull.png");
 	// NEED TO WRITE MOUSE PRESS EVENTS IN SCREEN 
 	timer = new QTimer(this);
-	timer->setInterval(5);
+	timer->setInterval(8);
 	connect(timer, SIGNAL(timeout()), this, SLOT(handleTimer()));
 	//connect(this, SIGNLA(levelUp()), this, SLOT
 	timer->start();
@@ -208,7 +230,7 @@ void MainWindow::startGame(){
 
 void MainWindow::handleTimer(){
 	cout << " HI!" << endl;
-	bool shark_here = 0;
+	bool shark_here = false;
 //check for collisions
 //collides withssssss
 		//boat
@@ -220,25 +242,25 @@ void MainWindow::handleTimer(){
 		int boatVelY;
 		int fireVelY, fireVelX;
 		
-	if(count==1){
+	if(count==0){
 	cout << " in if! " << endl;
-		sharkVelX=3;
-		sharkVelY=3;
-		bubbleVelX=3;
-		bubbleVelY=3;
-		boatVelY=2;
-		fireVelY=5;
-		fireVelX=5;
+		sharkVelX=1;
+		sharkVelY=1;
+		bubbleVelX=2;
+		bubbleVelY=2;
+		boatVelY=1;
+		fireVelY=1;
+		fireVelX=1;
 	}
 	//have everything move do move functions
 	if(score==2000){
-			sharkVelX=5;
-		sharkVelY=5;
-		bubbleVelX=5;
-		bubbleVelY=5;
-		boatVelY=3;
-		fireVelY=6;
-		fireVelX=6;
+			sharkVelX=2;
+		sharkVelY=2;
+		bubbleVelX=2;
+		bubbleVelY=2;
+		boatVelY=1;
+		fireVelY=2;
+		fireVelX=2;
 		levelUp();
 	//emit level up?
 		//set velocities
@@ -247,13 +269,13 @@ void MainWindow::handleTimer(){
 			//bubbles every in a blue moon
 	}
 	if(score==5000){
-	sharkVelX=7;
-		sharkVelY=7;
-		bubbleVelX=6;
-		bubbleVelY=6;
-		boatVelY=4;
-		fireVelY=7;
-		fireVelX=7;
+		sharkVelX=3;
+		sharkVelY=3;
+		bubbleVelX=2;
+		bubbleVelY=2;
+		boatVelY=2;
+		fireVelY=3;
+		fireVelX=3;
 		levelUp();
 		//reset velocities
 				//tiki man appears
@@ -264,54 +286,75 @@ void MainWindow::handleTimer(){
 			//bubbles more often
 	}
 	if(score==8000){
-		sharkVelX=9;
-		sharkVelY=9;
-		bubbleVelX=6;
-		bubbleVelY=6;
-		boatVelY=5;
-		fireVelY=8;
-		fireVelX=8;
+		sharkVelX=4;
+		sharkVelY=4;
+		bubbleVelX=2;
+		bubbleVelY=2;
+		boatVelY=3;
+		fireVelY=4;
+		fireVelX=4;
 		levelUp();
 		//velocity increases on boats, sharks, and bullets
 	}	
 		
-	if(count%10==0){
-	cout << "Lets switch" << endl;
-	int createS =rand()%4;
-	switch(createS){
-		case 0:{
-			Shark *s1 = new Shark(shark_pic, rand()%500, rand()%900, 50, mermaid->y_);
-			scene->addItem(s1);
-			sharks.push_back(s1);
-			on_screen.push_back(s1);
-			s1->setVel(sharkVelX, sharkVelY);
-			break;}
-		case 1:{
-			Bubble *b1 = new Bubble(bubble_pic, rand()%500, rand()%900);
-			scene->addItem(b1);
-			on_screen.push_back(b1);
-			b1->setVel(bubbleVelX, bubbleVelY);
-			break;}
-		case 2:{
-			Shark *s2 = new Shark(shark_pic, rand()%500, rand()%900, 50, mermaid->y_);
-			scene->addItem(s2);
-			sharks.push_back(s2);
-			on_screen.push_back(s2);
-			s2->setVel(sharkVelX, sharkVelY);
-			break;}
-		case 3:{
-			Boat *bt = new Boat(boat_pic, 500, 0);
-			scene->addItem(bt);
-			on_screen.push_back(bt);
-			bt->setVel(boatVelY);
-			break;}
-		case 4:{
-			Shark *s3 = new Shark(shark_pic, rand()%500, rand()%900, 50, mermaid->y_);
-			scene->addItem(s3);
-			sharks.push_back(s3);
-			on_screen.push_back(s3);
-			s3->setVel(sharkVelX, sharkVelY);
-			break;}
+	if(count%200==0){
+		cout << "Lets switch" << endl;
+		int createS =rand()%6;
+		switch(createS){
+			case 0:{
+				Shark *s1 = new Shark(shark_pic, 900, rand()%500, 50, mermaid->y_);
+				scene->addItem(s1);
+				sharks.push_back(s1);
+				on_screen.push_back(s1);
+				s1->setVel(sharkVelX, sharkVelY);
+				shark_here = true;
+				break;}
+			case 1:{
+				Bubble *b1 = new Bubble(bubble_pic, 900, rand()%500);
+				scene->addItem(b1);
+				on_screen.push_back(b1);
+				b1->setVel(bubbleVelX, bubbleVelY);
+				break;}
+			case 2:{
+				Shark *s2 = new Shark(shark_pic, 900, rand()%500, 50, mermaid->y_);
+				scene->addItem(s2);
+				sharks.push_back(s2);
+				on_screen.push_back(s2);
+				s2->setVel(sharkVelX, sharkVelY);
+				shark_here = true;
+				break;}
+			case 3:{
+				Boat *bt = new Boat(boat_pic, 900, 30);
+				scene->addItem(bt);
+				on_screen.push_back(bt);
+				bt->setVel(boatVelY);
+				break;}
+			case 4:{
+				Shark *s3 = new Shark(shark_pic, 900, rand()%500, 50, mermaid->y_);
+				scene->addItem(s3);
+				sharks.push_back(s3);
+				on_screen.push_back(s3);
+				s3->setVel(sharkVelX, sharkVelY);
+				shark_here = true;
+				break;}
+			case 5:{
+					Shark *s4 = new Shark(shark_pic,900, rand()%500, 50, mermaid->y_);
+				scene->addItem(s4);
+				sharks.push_back(s4);
+				on_screen.push_back(s4);
+				s4->setVel(sharkVelX, sharkVelY);
+				shark_here = true;
+				break;			
+			}
+			case 6:{
+				Shark *s5 = new Shark(shark_pic, 900, rand()%500, 50, mermaid->y_);
+				scene->addItem(s5);
+				sharks.push_back(s5);
+				on_screen.push_back(s5);
+				s5->setVel(sharkVelX, sharkVelY);
+				shark_here = true;
+				break;
+			}
 		}
 	}
 	QLinkedList<GameItem*>::iterator it;
@@ -326,21 +369,33 @@ void MainWindow::handleTimer(){
 				}
 				else{
 					loseLife();
-					scoreFunct(-100);
 				}
 			}
-			if((*it)->onScreen()==false){
-				on_screen.erase(it);
+	}
+	for(it=on_screen.begin(); it!=on_screen.end(); ++it){
+		if((*it)->onScreen()==false){
+				cout << "removing item?" << endl;
 				scene->removeItem((*it));
+				cout << "ope" << endl;
+				on_screen.erase(it);
+				cout << "MAH" << endl;
+				//++it; //could be wrong
 				// remove from linked list and delete
 			}
 	}
-	QLinkedList<Shark*>::iterator it2;
-	for(it2=sharks.begin(); it2!=sharks.end(); ++it2){
-		(*it2)->setGoals(50, mermaid->pos().y()); 
-		cout << "sharks FORLOOP!" << endl;
-	}
 	
+	if(shark_here==true&&count%30==0){
+	int i=0;
+		QLinkedList<Shark*>::iterator it2;
+		for(it2=sharks.begin(); it2!=sharks.end(); ++it2){
+			(*it2)->setGoals(50, mermaid->pos().y()); 
+			cout << "sharks FORLOOP!" << endl;
+			i++;
+		}
+		if(i==0){
+			shark_here=false;
+		}
+	}
 	if(lives==0){
 		emit death();
 	}
@@ -355,6 +410,7 @@ void MainWindow::handleTimer(){
 
 void MainWindow::loseLife(){
 	lives-=1;
+	scoreFunct(-100);
 	lives_label->setNum(lives);
 
 }
