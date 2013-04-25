@@ -16,6 +16,7 @@ class Shark: public GameItem {
 		void setGoals(int wx, int wy);
 		int goalY;
 		int goalX;
+		
 };
 
 #endif

@@ -81,10 +81,9 @@ private:
 		int count;
 		bool game_in_play;
 		QLinkedList<GameItem*> on_screen;
-		QVector<Shark*> sharks;
+		QLinkedList<Shark*> sharks;
 		
 signals:
-	void levelUp();
 	void death();
 	//void  collision signals?
 public slots:
@@ -92,6 +91,7 @@ public slots:
 	void loseLife();
 	void gainLife();
 	void scoreFunct(int points);
+	void levelUp();
 	void gameOver();
 	void startGame();
 	void pauseGame();

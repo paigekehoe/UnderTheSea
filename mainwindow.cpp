@@ -13,10 +13,13 @@ MainWindow::MainWindow()
     view->setFixedSize( WINDOW_MAX_X*2, WINDOW_MAX_Y*2 );
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setSceneRect(WINDOW_MAX_X*2, WINDOW_MAX_Y*2 );
+    //view->setSceneRect(QRectF(WINDOW_MAX_X*2, WINDOW_MAX_Y*2));
     mainW = new QMainWindow;
     mainW->setCentralWidget(view);
     mainW->setWindowTitle("Under The Sea");
+    
+    //MAKE BACKGROUND WITH THING
+    
     QPixmap back("water.jpg");
     //graphicsView->setAlignment( Qt::AlignLeft | Qt::AlignTop
     //setSceneRect( 0, 0, width, height ); 
@@ -168,16 +171,18 @@ void MainWindow::startGame(){
 	mermaid->setFocus();
 	scene->setFocusItem(mermaid);//mainW->setFocus(mermaid);
 	//view->setFocusPolicy(Qt::NoFocus);
-	
-	/*shark_pic = new Pixmap("sharky.png");
-	bubble_pic = new Pixmap("power.png");
-	fire_pic = new Pixmap("fire.png");
-	boat_pic = new Pixmap("hull.png");*/
+	cout << "making pix maps" << endl;
+	shark_pic = new QPixmap("sharky.png");
+	bubble_pic = new QPixmap("power.png");
+	fire_pic = new QPixmap("fire.png");
+	boat_pic = new QPixmap("hull.png");
 	// NEED TO WRITE MOUSE PRESS EVENTS IN SCREEN 
 	timer = new QTimer(this);
 	timer->setInterval(5);
 	connect(timer, SIGNAL(timeout()), this, SLOT(handleTimer()));
+	//connect(this, SIGNLA(levelUp()), this, SLOT
 	timer->start();
+	cout << "Timer started " << endl;
 		
 
 	}
@@ -202,6 +207,7 @@ void MainWindow::startGame(){
 
 
 void MainWindow::handleTimer(){
+	cout << " HI!" << endl;
 	bool shark_here = 0;
 //check for collisions
 //collides withssssss
@@ -209,32 +215,31 @@ void MainWindow::handleTimer(){
 		//shark
 		//fire
 		//bubble
-	int createS =rand()%4;
-	switch(createS){
-		case 0:
-			//Shark *s1 = new Shark(shark_pic, rand()%500, rand()%900, 50, mermaid->y_);
-			//sharks.push_back(s1);
-			//on_screen.push_back(s1);
-			break;
-		case 1:
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-		break;
+		int sharkVelX, sharkVelY;
+		int bubbleVelX, bubbleVelY;
+		int boatVelY;
+		int fireVelY, fireVelX;
+		
+	if(count==1){
+	cout << " in if! " << endl;
+		sharkVelX=3;
+		sharkVelY=3;
+		bubbleVelX=3;
+		bubbleVelY=3;
+		boatVelY=2;
+		fireVelY=5;
+		fireVelX=5;
 	}
-	/*QLinkedList<GameItem*>::iterator it;
-	for(it=on_screen.begin(); it!=on_screen.end(); ++it){
-			*it->move();
-	}
-	QVector<Shark*>::iterator it2;
-	for(it2=sharks.begin(); it!=sharks.end(); ++it){
-		it2->setGoals(50, mermaid->y_);
-	}*/
 	//have everything move do move functions
 	if(score==2000){
+			sharkVelX=5;
+		sharkVelY=5;
+		bubbleVelX=5;
+		bubbleVelY=5;
+		boatVelY=3;
+		fireVelY=6;
+		fireVelX=6;
+		levelUp();
 	//emit level up?
 		//set velocities
 		//every certain number on counter appears sharks and
@@ -242,6 +247,14 @@ void MainWindow::handleTimer(){
 			//bubbles every in a blue moon
 	}
 	if(score==5000){
+	sharkVelX=7;
+		sharkVelY=7;
+		bubbleVelX=6;
+		bubbleVelY=6;
+		boatVelY=4;
+		fireVelY=7;
+		fireVelX=7;
+		levelUp();
 		//reset velocities
 				//tiki man appears
 				QPixmap *tiki_pic=new QPixmap("tiki.png");
@@ -251,20 +264,93 @@ void MainWindow::handleTimer(){
 			//bubbles more often
 	}
 	if(score==8000){
+		sharkVelX=9;
+		sharkVelY=9;
+		bubbleVelX=6;
+		bubbleVelY=6;
+		boatVelY=5;
+		fireVelY=8;
+		fireVelX=8;
+		levelUp();
 		//velocity increases on boats, sharks, and bullets
-			//bubbles less often
+	}	
 		
-	
+	if(count%10==0){
+	cout << "Lets switch" << endl;
+	int createS =rand()%4;
+	switch(createS){
+		case 0:{
+			Shark *s1 = new Shark(shark_pic, rand()%500, rand()%900, 50, mermaid->y_);
+			scene->addItem(s1);
+			sharks.push_back(s1);
+			on_screen.push_back(s1);
+			s1->setVel(sharkVelX, sharkVelY);
+			break;}
+		case 1:{
+			Bubble *b1 = new Bubble(bubble_pic, rand()%500, rand()%900);
+			scene->addItem(b1);
+			on_screen.push_back(b1);
+			b1->setVel(bubbleVelX, bubbleVelY);
+			break;}
+		case 2:{
+			Shark *s2 = new Shark(shark_pic, rand()%500, rand()%900, 50, mermaid->y_);
+			scene->addItem(s2);
+			sharks.push_back(s2);
+			on_screen.push_back(s2);
+			s2->setVel(sharkVelX, sharkVelY);
+			break;}
+		case 3:{
+			Boat *bt = new Boat(boat_pic, 500, 0);
+			scene->addItem(bt);
+			on_screen.push_back(bt);
+			bt->setVel(boatVelY);
+			break;}
+		case 4:{
+			Shark *s3 = new Shark(shark_pic, rand()%500, rand()%900, 50, mermaid->y_);
+			scene->addItem(s3);
+			sharks.push_back(s3);
+			on_screen.push_back(s3);
+			s3->setVel(sharkVelX, sharkVelY);
+			break;}
+		}
 	}
+	QLinkedList<GameItem*>::iterator it;
+	for(it=on_screen.begin(); it!=on_screen.end(); ++it){
+	cout << "for loop!" << endl;
+			(*it)->move();
+			if((*it)->collidesWithItem(mermaid)){
+				if((*it)->isBubble==true){ // if it is a bubble? could make a b function for all
+					//also could make a bool for x is positive?? that would be cool
+					gainLife();
+					scoreFunct(100);
+				}
+				else{
+					loseLife();
+					scoreFunct(-100);
+				}
+			}
+			if((*it)->onScreen()==false){
+				on_screen.erase(it);
+				scene->removeItem((*it));
+				// remove from linked list and delete
+			}
+	}
+	QLinkedList<Shark*>::iterator it2;
+	for(it2=sharks.begin(); it2!=sharks.end(); ++it2){
+		(*it2)->setGoals(50, mermaid->pos().y()); 
+		cout << "sharks FORLOOP!" << endl;
+	}
+	
 	if(lives==0){
 		emit death();
 	}
 	if(count%400==0){
 		scoreFunct(1);
 	}
-	count++;
+	count+=1;
 	score_label->setNum(score);
 	lives_label->setNum(lives);
+	cout << "all done!" << endl;
 }
 
 void MainWindow::loseLife(){
@@ -283,6 +369,10 @@ void MainWindow::scoreFunct(int points){
 	//NEED TO UPDATE score print out on scene
 }
 
+void MainWindow::levelUp(){
+	level+=1;
+	level_label->setNum(level);
+}
 void MainWindow::gameOver(){
 	QMessageBox loser;
 	loser.setText("GAME OVER. you lose :(");
@@ -335,12 +425,13 @@ void MainWindow::quitGame(){
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *k){
-	if(game_in_play=true){
+	if(game_in_play==true){
 		mermaid->keyPressEvent(k);
 	}
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *e){
+	cout << "in mouse press event" << endl;
 	return;
 }
 

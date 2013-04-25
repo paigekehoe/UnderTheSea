@@ -1,3 +1,24 @@
+Makefile
+bubble.cpp~
+fire.cpp~
+game_pkehoe
+game_pkehoe.pro
+gameitem.h
+gameitem.h~
+main.cpp~
+mainwindow.cpp~
+mainwindow.h~
+mermaid.cpp~
+mermaid_real.bmp
+mermaid_real.jpg
+mermaid_real.png
+moc_mainwindow.cpp
+shark.cpp~
+shark.h~
+sharky.png
+tiki.cpp~
+
+
 # Compiled Object files
 *.slo
 *.lo

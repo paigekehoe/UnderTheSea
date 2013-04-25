@@ -9,7 +9,7 @@
 */
 void QGraphicsView::scrollContentsBy(int, int)
 {
-    //don't do anything hah!
+    //don't do anything haha!
 }
 
 

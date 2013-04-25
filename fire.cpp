@@ -3,6 +3,7 @@
 Fire::Fire(QPixmap *pm, int x, int y, int gy): GameItem(pm, x, y){
 	goalY = gy;
 	m=(gy-y)/(50-x);
+	isBubble=false;
 	// do some calcs to figure out trackign!
 }
 

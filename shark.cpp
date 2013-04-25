@@ -3,6 +3,7 @@
 Shark::Shark(QPixmap *pm, int x, int y, int gx, int gy): GameItem(pm, x, y){//: QGraphicsPixmapItem(){
 	goalX=gx;
 	goalY=gy;
+	isBubble=false;
 }
 
 Shark::~Shark(){
