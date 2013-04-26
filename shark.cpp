@@ -9,52 +9,58 @@ Shark::Shark(QPixmap *pm, long double xl, long double yl, int gx, int gy): GameI
 	y=yl;
 	isBubble=false;
 	isShark=true;
-	dx=(goalX-x);
+	/*dx=(goalX-x);
 	dy=(goalY-y);
 	vX=(dx/300.000);
 	vY=(dy/300.000);
 	std:: cout << "starting y: " << y << std::endl;
 	std:: cout << "starting x: " << x << std::endl;
 	std::cout << "vY: " << vY << std::endl;
-	std::cout << "vX: " << vX << std::endl;
+	std::cout << "vX: " << vX << std::endl;*/
 }
 
 Shark::~Shark(){
 }
 
 void Shark::move(){
+
+//go up or go down?
+//x always incrementing
+
+//switch 
+
 	//int hyp; //= sqrt(
 		//vY=velocity*(abs(y-goalY)
 		//vX=velocity*cos(t);
 	if(y>goalY){
-		std::cout<< " you are above me" << std::endl;
+		//std::cout<< " you are above me" << std::endl;
 		//hyp=sqrt(pow((x-50),2)+pow((y-goalY),2));
 		//vX=velocity;
 		//vY=velocity*sin(x/y);//(y-goalY)/hyp;
-		setPos(x+vX, y-vY);
-		x+=vX;
+		setPos(x-vX, y-vY);
+		x-=vX;
 		y-=vY;
 	}
 	if (y<goalY){
-		std::cout <<"you are below me" << std::endl;
+		//std::cout <<"you are below me" << std::endl;
 		//hyp=sqrt(pow((x-50),2)+pow((y-goalY),2));
 		//vX=velocity;
 		//vY=velocity*sin(x/y);//(goalY-y)/hyp;
 		//y=((goalY-y)/(goalX-x))*(x-vX)+goalY;
-		setPos(x+vX, y+vY);
-		x+=vX;
+		setPos(x-vX, y+vY);
+		x-=vX;
 		y+=vY;
 	} 
 	if(y==goalY){
-		std::cout << "I don't even know" << std::endl;
+		//std::cout << "I don't even know" << std::endl;
 	//vX=velocity;
-	setPos(x+vX, y);
-	x+=vX;
-	//y+=vY;
+	setPos(x-vX, y-(vY/2));
+	x-=vX;
+	y-=vY;
 
 	}
-	std::cout << "goaly: " << goalY << std::endl;
-	std::cout << "y: " << y <<std::endl;
+	//std::cout << "goaly: " << goalY << std::endl;
+	//std::cout << "y: " << y <<std::endl;
 	/*else i(y=goalY){
 		setPos(x-vX, y+vY);
 		x-=vX;
@@ -85,19 +91,22 @@ void Shark::move(){
 }
 
 void Shark::setVel(int v){
-//	vX=vX*v;
-//	vY=vY*v;
+	vX=v;
+	vY=v;
 
 }
 
-void Shark::setGoals(long double wx, long double wy){
+void Shark::setGoals(long double wx, long double wy, int c){
+	if(c%200==0){
 	goalX=wx;
-	goalY=wy+25;
+	goalY=wy+25;}/*
 	dx=(goalX-x);
 	dy=(goalY-y);
 	vX=(dx/300.000);
 	vY=(dy/300.000);
 	std::cout<< "new goals: " << goalY << " " << goalX << std::endl;
+		std::cout << "vY: " << vY << std::endl;
+	std::cout << "vX: " << vX << std::endl;*/
 	
 
 }

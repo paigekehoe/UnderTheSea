@@ -24,6 +24,6 @@ bool Boat::onScreen(){
 	return true;
 }
 
-void Boat::setGoals(long double wx, long double wy){
+void Boat::setGoals(long double wx, long double wy, int c){
 
 }

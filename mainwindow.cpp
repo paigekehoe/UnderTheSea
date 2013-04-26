@@ -259,7 +259,7 @@ void MainWindow::handleTimer(){
 			(*it)->move();
 		}
 */
-	//cout << " HI!" << endl;
+	cout << " HI!" << endl;
 	shark_here = false;
 //check for collisions
 //collides withssssss
@@ -281,7 +281,7 @@ void MainWindow::handleTimer(){
 		fireVelX=1;
 	}
 	//have everything move do move functions
-	if(count==500){
+	if(count==1000){
 			sharkVel=2;
 		bubbleVelX=2;
 		bubbleVelY=2;
@@ -298,7 +298,7 @@ void MainWindow::handleTimer(){
 			tiki = new Tiki(tiki_pic, 550, 350);
 			scene->addItem(tiki);
 	}
-	if(count==1100){
+	if(count==2100){
 		sharkVel=4;
 		bubbleVelX=2;
 		bubbleVelY=2;
@@ -312,13 +312,13 @@ void MainWindow::handleTimer(){
 			//velocity is incremented for boats and sharks
 			//bubbles more often
 	}
-	if(count==2000){
-		sharkVel=6;
+	if(count==3000){
+		sharkVel=7;
 		bubbleVelX=2;
 		bubbleVelY=2;
 		boatVelY=3;
 		fireVelY=3;
-		fireVelX=3;
+		fireVelX=2;
 		levelUp();
 		//velocity increases on boats, sharks, and bullets
 	}	
@@ -327,15 +327,15 @@ void MainWindow::handleTimer(){
 		int createS =rand()%5;
 		switch(createS){
 			case 0:{
-				Shark *s1 = new Shark(shark_pic, 900, rand()%500, 50, mermaid->y_);
+				Shark *s1 = new Shark(shark_pic, 900, rand()%450, 50, mermaid->y_);
 				scene->addItem(s1);
 				//sharks.push_back(s1);
 				on_screen.push_back(s1);
 				s1->setVel(sharkVel);
 				shark_here = true;
 				break;}
-		/*	case 1:{
-				Shark *s4 = new Shark(shark_pic,900, rand()%500, 50, mermaid->y_);
+			case 1:{
+				Shark *s4 = new Shark(shark_pic,900, rand()%450, 50, mermaid->y_);
 				scene->addItem(s4);
 				//sharks.push_back(s4);
 				on_screen.push_back(s4);
@@ -344,7 +344,7 @@ void MainWindow::handleTimer(){
 				break;
 				}
 			case 2:{
-				Shark *s2 = new Shark(shark_pic, 900, rand()%500, 50, mermaid->y_);
+				Shark *s2 = new Shark(shark_pic, 900, rand()%450, 50, mermaid->y_);
 				scene->addItem(s2);
 				//sharks.push_back(s2);
 				on_screen.push_back(s2);
@@ -358,53 +358,56 @@ void MainWindow::handleTimer(){
 				bt->setVel(boatVelY);
 				break;}
 			case 4:{
-				Bubble *b1 = new Bubble(bubble_pic, 700, rand()%500);
+				Bubble *b1 = new Bubble(bubble_pic, 700, rand()%450);
 				scene->addItem(b1);
 				on_screen.push_back(b1);
 				b1->setVel(bubbleVelX, bubbleVelY);
 				break;	
-			}*/
+			}
 		}
 	}
+	cout << "outch" << endl;
 	if(level>=2&&count%70==0){
 		//cout << "in here! - fire" << endl;
 		//shoot fire!
-///		cout << "mermaid pos " << mermaid->pos().y() << endl;
-//		Fire *f = new Fire(fire_pic, 540.000, 380.000, mermaid->pos().y());
-//		scene->addItem(f);
-//		on_screen.push_back(f);
-//		f->setVel(fireVelX, fireVelY);
+//		cout << "mermaid pos " << mermaid->pos().y() << endl;
+		Fire *f = new Fire(fire_pic, 540.000, 380.000, mermaid->pos().y());
+		scene->addItem(f);
+		on_screen.push_back(f);
+		f->setVel(fireVelX, fireVelY);
 	}
-	QLinkedList<GameItem*>::iterator it;
-	for(it=on_screen.begin(); it!=on_screen.end(); ++it){
-			(*it)->move();
-			(*it)->setGoals(50, mermaid->y_);
-			if((*it)->collidesWithItem(mermaid)){
-				//timer->stop();
-				if((*it)->isBubble==true){
+	//if(on_screen->empty()==false){
+		QLinkedList<GameItem*>::iterator it;
+		for(it=on_screen.begin(); it!=on_screen.end(); ++it){
+				(*it)->move(); //should set goals be before move?
+				(*it)->setGoals(50, mermaid->y_, count);
+				cout << "in iterator" << endl;
+				if((*it)->collidesWithItem(mermaid)){
+					//timer->stop();
+					if((*it)->isBubble==true){
+							gainLife();
+							scoreFunct(10);
+					}
+					else{
+						loseLife();}
+					scene->removeItem(*it);
+					it = on_screen.erase(it);}
+			}  /*
+					if((*it)->isBubble==true){ // if it is a bubble? could make a b function for all
+						//also could make a bool for x is positive?? that would be cool
 						gainLife();
 						scoreFunct(10);
-				}
-				else{
-					loseLife();}
-				scene->removeItem(*it);
-				it = on_screen.erase(it);}
-		}
-	/*			if((*it)->isBubble==true){ // if it is a bubble? could make a b function for all
-					//also could make a bool for x is positive?? that would be cool
-					gainLife();
-					scoreFunct(10);
-				}
-				else{
-					//could remove the moster from the screen
-					if((*it)->isShark==true){
-						// remove from screen and take off shark sharks
-						//scene->removeItem(*it);
-						//sharks.erase(it);}
-					//it=on_screen.erase(it);
-					loseLife();
-				}			}*/
-	/*if(count%15==0){
+					}
+					else{
+						//could remove the moster from the screen
+						if((*it)->isShark==true){
+							// remove from screen and take off shark sharks
+							//scene->removeItem(*it);
+							//sharks.erase(it);}
+						//it=on_screen.erase(it);
+						loseLife();
+					}			}
+		/*if(count%15==0){
 		QLinkedList<GameItem*>::iterator it;
 		for(it=on_screen.begin(); it!=on_screen.end(); ++it){
 				(*it)->setGoals(50, mermaid->pos().y());
@@ -412,7 +415,7 @@ void MainWindow::handleTimer(){
 	}*/
 
 
-
+cout << "hither! " << endl;
 
 	QLinkedList<GameItem*>::iterator it3;
 	it3=on_screen.begin();
@@ -449,7 +452,7 @@ void MainWindow::handleTimer(){
 	count++;
 	score_label->setNum(score);
 	lives_label->setNum(lives);
-	
+	cout << "done" << endl;
 }
 
 void MainWindow::loseLife(){

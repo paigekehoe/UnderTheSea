@@ -36,6 +36,6 @@ void Fire::setVel(double cx, double cy){
 	//speed = cx;
 }
 
-void Fire::setGoals(long double wx, long double wy){
+void Fire::setGoals(long double wx, long double wy, int c){
 	//do nothing because we do not want to change fire's goal
 }

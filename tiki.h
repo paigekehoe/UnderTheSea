@@ -11,7 +11,7 @@ class Tiki: public GameItem {
 	public:
 		Tiki(QPixmap* p, int nx, int ny);
 		void move();
-		void setGoals(long double wx, long double wy);
+		void setGoals(long double wx, long double wy, int c);
 };
 
 #endif

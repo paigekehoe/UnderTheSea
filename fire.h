@@ -24,7 +24,7 @@ class Fire: public GameItem {
 		
 		double speed;
 		int angle;
-		void setGoals(long double wx, long double wy);
+		void setGoals(long double wx, long double wy, int c);
 };
 
 #endif

@@ -14,7 +14,7 @@ class Shark: public GameItem {
 		void move();
 		void setVel(int v);
 		int velocity;		
-		void setGoals(long double wx, long double wy);
+		void setGoals(long double wx, long double wy, int c);
 		long double dx, dy;
 		long double x;
 		long double y;

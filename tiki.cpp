@@ -10,6 +10,6 @@ void Tiki::move(){
 	//tiki does not move!
 }
 
-void Tiki::setGoals(long double wx, long double wy){
+void Tiki::setGoals(long double wx, long double wy, int c){
 	
 }

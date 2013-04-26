@@ -33,11 +33,11 @@ if(y_>=380){
 	}
 }
 void Mermaid::moveUp(){
-			setPos(50, y_-5);
-			y_-=5;
+			setPos(50, y_-9);
+			y_-=9;
 }
 
 void Mermaid::moveDown(){
-			setPos(50, y_+5);
-			y_+=5;
+			setPos(50, y_+9);
+			y_+=9;
 }

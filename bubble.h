@@ -11,10 +11,10 @@ class Bubble: public GameItem {
 	public:
 		Bubble(QPixmap *pm, int nx, int ny);
 		void move();
-		int origin;
+		long double origin;
 		void setVel(int cx, int cy);
 		int move_num;
-		void setGoals(long double wx, long double wy);
+		void setGoals(long double wx, long double wy, int c);
 	//public signals:
 		//void powerUp();
 

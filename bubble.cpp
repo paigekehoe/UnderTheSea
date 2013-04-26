@@ -8,7 +8,7 @@ Bubble::Bubble(QPixmap *pm, int nx, int ny): GameItem(pm, nx, ny) {
 }
 
 void Bubble::move(){
-	if(move_num<100){
+	if(move_num<20){
 		setPos(x-vX, y-vY);
 		x=x-vX;
 		y=y-vY;
@@ -18,7 +18,7 @@ void Bubble::move(){
 		setPos(x-vX, y+vY);
 		x=x-vX;
 		y=y+vY;
-		if(move_num>200){
+		if(move_num>40){
 			move_num=0;
 		}
 	}
@@ -29,6 +29,6 @@ void Bubble::setVel(int cx, int cy){
 	vY=cy;
 }
 
-void Bubble::setGoals(long double wx, long double wy){
+void Bubble::setGoals(long double wx, long double wy, int c){
 	//do nada
 }

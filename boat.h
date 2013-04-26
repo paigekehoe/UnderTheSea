@@ -14,7 +14,7 @@ class Boat: public GameItem{
 		void move();
 		void setVel(int cx);
 		bool onScreen();
-		void setGoals(long double wx, long double wy);
+		void setGoals(long double wx, long double wy, int c);
 };
 
 #endif
