@@ -18,11 +18,11 @@ if(y_<=50){
 	y_++;
 	return;
 }
-if(y_>=400){
+if(y_>=380){
 	y_--;
 	return;
 }
-//std::cout << "key press" << std::endl;
+
 	switch(k->key()){
 		case Qt::Key_Up:
 			moveUp();

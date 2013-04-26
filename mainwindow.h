@@ -86,16 +86,16 @@ private:
 		QLinkedList<GameItem*> on_screen;
 		QLinkedList<Shark*> sharks;
 		
+		void levelUp();
+		void collision(GameItem* item);
+		void scoreFunct(int points);
+		void loseLife();
+		void gainLife();
 signals:
 	void death();
 	//void  collision signals?
 public slots:
 	void handleTimer();
-	void loseLife();
-	void gainLife();
-	void collision(GameItem* item);
-	void scoreFunct(int points);
-	void levelUp();
 	void gameOver();
 	void startGame();
 	void pauseGame();

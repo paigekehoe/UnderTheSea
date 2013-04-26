@@ -9,3 +9,7 @@ Tiki::Tiki(QPixmap *p, int nx, int ny): GameItem(p, nx, ny){
 void Tiki::move(){
 	//tiki does not move!
 }
+
+void Tiki::setGoals(long double wx, long double wy){
+	
+}

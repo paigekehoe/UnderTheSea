@@ -13,6 +13,8 @@ class Bubble: public GameItem {
 		void move();
 		int origin;
 		void setVel(int cx, int cy);
+		int move_num;
+		void setGoals(long double wx, long double wy);
 	//public signals:
 		//void powerUp();
 
