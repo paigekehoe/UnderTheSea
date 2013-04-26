@@ -73,7 +73,7 @@ private:
 		Mermaid *mermaid;
 		Tiki *tiki;
 		QTimer* timer;
-		QLabel	*level_label, *lives_label, *score_label, *w;
+		QLabel	*level_label, *lives_label, *score_label, *w, *i, *name_label;
 		QPixmap *shark_pic, *bubble_pic, *fire_pic, *boat_pic;//, *welcome_screen;
 		QLineEdit *playerName;
 		//QVector<QGraphicsPixmapItem> on_screen;

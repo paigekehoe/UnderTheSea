@@ -47,7 +47,7 @@ MainWindow::MainWindow()
     createMenuArea();
     mainW->addDockWidget(Qt::BottomDockWidgetArea, menuArea);
     scene->addWidget(welcome);
-    welcome->move(135, 100);
+    welcome->move(250, 100);
    
     //mainW->addDockWidget(Qt::TopDockWidgetArea, scoreArea);
     
@@ -71,21 +71,21 @@ void MainWindow::createTitle(){
 	menu = new QWidget;
 	player_name = new QLineEdit;  //// make start menu
 	QLabel* title = new QLabel(this);
-	QLabel* subtitle = new QLabel(this);
-	QLabel* instructions = new QLabel(this);
+	name_label = new QLabel(this);
+	//QLabel* instructions = new QLabel(this);
 	const QPixmap picture("UnderTheSea.png");
 	title->setPixmap(picture);
 	//title->setMask(picture.mask());
 	title->setAlignment(Qt::AlignTop | Qt::AlignCenter);
-	subtitle->setText("Input player name and press Start to play. Good Luck!");
-	subtitle->setAlignment(Qt::AlignCenter | Qt::AlignCenter);
+	
+	name_label->setText("Input player name and press Start to play. Good Luck!");
+	name_label->setAlignment(Qt::AlignCenter | Qt::AlignCenter);
 	//instructions->setText("Input player name and press Start to play. Good Luck!");
 	QLabel * playerName = new QLabel("Name: ", this);
 	playerName->setBuddy(player_name);
-	instructions->setAlignment(Qt::AlignCenter | Qt::AlignCenter);
 	QVBoxLayout *layout = new QVBoxLayout;
 	layout->addWidget(title);
-	layout->addWidget(subtitle);
+	layout->addWidget(name_label);
 	//layout->addWidget(instructions);
 	menu->setLayout(layout);
 	titleArea->setWidget(menu);
@@ -157,8 +157,12 @@ void MainWindow::createStartArea(){
 		//welcome = new QDockWidget;
 		welcome = new QWidget;
 		w = new QLabel(this);
+		i = new QLabel(this);
 		const QPixmap welcome_screen("welcome.png");
 		w->setPixmap(welcome_screen);
+		const QPixmap instructions("instructions.png");
+		i->setPixmap(instructions);
+		i->setAlignment(Qt::AlignCenter | Qt::AlignCenter);
 		//scene->addWidget(welcome);
 		player_name = new QLineEdit();
 		
@@ -166,6 +170,7 @@ void MainWindow::createStartArea(){
 		
 		layout->addWidget(w);
 		layout->addWidget(player_name);
+		layout->addWidget(i);
 		welcome->setLayout(layout);
 		welcome->show();
 		
@@ -201,6 +206,7 @@ void MainWindow::startGame(){
 	}
 	delete welcome;
 	on_screen.clear();
+	name_label->setText("Player:  " + temp);
 	//sharks.clear();
 	game_in_play = true;
 	cout << "start game" << endl;
@@ -218,7 +224,7 @@ void MainWindow::startGame(){
 	boat_pic = new QPixmap("hull.png");
 	// NEED TO WRITE MOUSE PRESS EVENTS IN SCREEN 
 	timer = new QTimer(this);
-	timer->setInterval(8);
+	timer->setInterval(15);
 	connect(timer, SIGNAL(timeout()), this, SLOT(handleTimer()));
 	//connect(this, SIGNLA(levelUp()), this, SLOT
 	timer->start();
@@ -281,7 +287,7 @@ void MainWindow::handleTimer(){
 		fireVelX=1;
 	}
 	//have everything move do move functions
-	if(count==1000){
+	if(count==1200){
 			sharkVel=2;
 		bubbleVelX=2;
 		bubbleVelY=2;
@@ -298,7 +304,7 @@ void MainWindow::handleTimer(){
 			tiki = new Tiki(tiki_pic, 550, 350);
 			scene->addItem(tiki);
 	}
-	if(count==2100){
+	if(count==2900){
 		sharkVel=4;
 		bubbleVelX=2;
 		bubbleVelY=2;
@@ -312,13 +318,13 @@ void MainWindow::handleTimer(){
 			//velocity is incremented for boats and sharks
 			//bubbles more often
 	}
-	if(count==3000){
+	if(count==6000){
 		sharkVel=7;
-		bubbleVelX=2;
-		bubbleVelY=2;
-		boatVelY=3;
-		fireVelY=3;
-		fireVelX=2;
+		bubbleVelX=3;
+		bubbleVelY=3;
+		boatVelY=4;
+		fireVelY=4;
+		fireVelX=4;
 		levelUp();
 		//velocity increases on boats, sharks, and bullets
 	}	
@@ -381,7 +387,6 @@ void MainWindow::handleTimer(){
 		for(it=on_screen.begin(); it!=on_screen.end(); ++it){
 				(*it)->move(); //should set goals be before move?
 				(*it)->setGoals(50, mermaid->y_, count);
-				cout << "in iterator" << endl;
 				if((*it)->collidesWithItem(mermaid)){
 					//timer->stop();
 					if((*it)->isBubble==true){
@@ -555,7 +560,7 @@ void MainWindow::stopGame(){
 	scene->clear();
 	createStartArea();
 	scene->addWidget(welcome);
-	welcome->move(135, 100);
+	welcome->move(250, 100);
 	game_in_play=false;
 	cout << "stop game" << endl;
 }
