@@ -13,7 +13,7 @@ This is an interactive game themed like the little mermaid. The player will be t
 ### Characters
 > **Mermaid**
 	This is the character controlled by the user/ game player pressing the up and down arrow keys on the keyboard. 
-	![pkehoe](mermaid.png "The Little Mermaid")
+	![pkehoe](mermaid_real.png "The Little Mermaid")
 	
 > **Bubble power**
 	These bubbles will move bouncing up and down from right to left toward the mermaid. If caught, they give the mermaid extra lives and 100 bonus points.

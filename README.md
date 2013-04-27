@@ -23,8 +23,3 @@ doxygen config txt
 #Command to run
 ./game_pkehoe
 ```
-
-### Screenshots
-	![pkehoe](ss1.png "Mock Game Board")
-	![pkehoe](ss2.png "Mock Game Board")
-	![pkehoe](ss3.png "Mock Game Board")
