@@ -14,20 +14,26 @@ Mermaid::~Mermaid(){
 }
 
 void Mermaid::keyPressEvent(QKeyEvent *k){
-if(y_<=50){
+/*if(y_<50){
 	y_++;
 	return;
 }
-if(y_>=380){
+if(y_>380){
 	y_--;
 	return;
-}
+} */
 
 	switch(k->key()){
 		case Qt::Key_Up:
+			if(y_<50){
+				return;
+			}
 			moveUp();
 			break;
 		case Qt::Key_Down:
+			if(y_>380){
+				return;
+			}
 			moveDown();
 			break;
 	}
