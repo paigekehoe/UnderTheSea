@@ -19,7 +19,7 @@ qmake
 make
 #Doxygen Instructions
 doxygen -g config.txt
-doxygen config txt
+doxygen config.txt
 #Command to run
 ./game_pkehoe
 ```
