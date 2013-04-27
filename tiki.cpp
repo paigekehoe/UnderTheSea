@@ -6,7 +6,6 @@ Tiki::Tiki(QPixmap *p, int nx, int ny): GameItem(p, nx, ny){
 	isShark=false;
 }
 
-
 void Tiki::move(){
 	//tiki does not move!
 }
