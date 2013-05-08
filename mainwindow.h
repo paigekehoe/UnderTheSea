@@ -33,7 +33,6 @@
 #include <QGraphicsPixmapItem>
 #include <iostream>
 #include <fstream>
-//#include <ifstream>
 #include <sstream>
 #include <string>
 #include "shark.h"
@@ -122,14 +121,12 @@ private:
 		bool game_in_play;
 		/** a boolean variable to tell if the start button has been pressed while a game is already being played */
 		bool repeat;
-		
+		/** boolean variable to check if the game already has high scores */
 		bool firstGame;
 		/** QLinkedList to hold pointers to the Game Items that are on screen */
 		QLinkedList<GameItem*> on_screen;
 		/** adding a level to int level and displaying it on screen */
 		void levelUp();
-		/** a function to detect collisions between game items */
-		void collision(GameItem* item);
 		/** a function to modify and update score */
 		void scoreFunct(int points);
 		/** a function to take away a life and output it to screen */
@@ -168,8 +165,6 @@ public slots:
 	void quitGame();
 	/** a function to restart the timer */
 	void resumeTime();
-	/** a function to display game high scorers */
-	void showScores();
 };
 
 
