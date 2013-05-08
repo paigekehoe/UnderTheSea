@@ -9,7 +9,15 @@ MainWindow::MainWindow()
 		lives=5;
 		repeat=false;
 		game_in_play =false;
-		firstGame=true;
+		ifstream input("scores.txt");
+		string tester;
+		input>>tester;
+		cout << tester << "<- that should be blank?" <<endl;	
+		if(tester==""){
+		  firstGame=true;
+		}
+		else
+		  firstGame=false;
 		scene = new QGraphicsScene(0, 0, WINDOW_MAX_X*2+100, WINDOW_MAX_Y*2+100);
 		//creating a new graphics scene
     view = new QGraphicsView();
@@ -310,7 +318,7 @@ void MainWindow::handleTimer(){
 				bt->setVel(boatVelY);
 				break;}
 			case 4:{
-				Bubble *b1 = new Bubble(bubble_pic, 700, rand()%400+40);
+				Bubble *b1 = new Bubble(bubble_pic, 700, rand()%400+55);
 				scene->addItem(b1);
 				on_screen.push_back(b1);
 				b1->setVel(bubbleVelX, bubbleVelY);
@@ -428,23 +436,27 @@ void MainWindow::levelUp(){
 
 void MainWindow::gameOver(){
 	// the high score file
-	cout << name << endl;
+	vector<string> nameList;
+	vector<string> scoreList;
 	int i=0;
-	fstream scoreFile("scores.txt");
+	ifstream scoreFile;
+	ofstream scoreFileO;
 	if(firstGame==true){
-		scoreFile.open("scores.txt", fstream::in | fstream::out);
+		scoreFileO.open("scores.txt");
 		cout << "wowzers" << endl;
-		scoreFile<< name;
+		scoreFileO<< name;
 		cout << name << endl;
-		scoreFile<< "\n";
-		scoreFile<< score;
+		scoreFileO<< "\n";
+		scoreFileO<< score;
 		cout << score << endl;
 		firstGame=false;
+		cout << "closing time" << endl;
+		scoreFileO.close();
 	}
 	else{
 		cout << "hi you're dead" << endl;
 		bool added=false;
-		scoreFile.open("scores.txt", fstream::in | fstream::out);
+		scoreFile.open("scores.txt");
 		cout << "1" << endl;
 			while(!scoreFile.eof()){
 				cout << "1.5" << endl;
@@ -452,23 +464,45 @@ void MainWindow::gameOver(){
 				string tempscore;
 				getline(scoreFile, tempstring);
 				getline(scoreFile, tempscore);
+				cout << tempstring << "  " <<tempscore <<endl;
 				int intScore = atoi(tempscore.c_str());
-				if(intScore<score){
-						scoreFile<<name << "\n" << score;
-						added=true;	
-						break;
+				if(added==false){
+					if(intScore<score){
+							//scoreFile<<name << "\n" << score;
+							cout << " you are better than the others" <<endl;
+							nameList.push_back(name);
+							stringstream convert;
+							convert<<score;
+							scoreList.push_back(convert.str());
+							added=true;	
+					}
 				}
+				nameList.push_back(tempstring);
+				scoreList.push_back(tempscore);
 				i++;
 				cout << "2" << endl;
 			}
-	
 			if(added==false){
-					scoreFile<<name << " " << score;
+					//scoreFile<<name << " " << score;
+					nameList.push_back(name);
+					stringstream convert;
+					convert<<score;
+					scoreList.push_back(convert.str());
 					cout << " 2.5" << endl;
 					}
-					
+				scoreFile.close();//necessary?		
+			cout << "ope open again" << endl;
+			scoreFileO.open("scores.txt");
+			int j =0;
+			while(j<=i){
+				scoreFileO<<nameList[j] << endl;
+				scoreFileO<<scoreList[j]<<endl;
+				cout << nameList[i] << "  " << scoreList[j] << endl;
+				j++;
 			}
-			scoreFile.close();//necessary?
+			scoreFileO.close();
+		}
+		//scoreFileO<<name<<"\n"<<score;
 		cout << "5" << endl;
 		QMessageBox loser;
 		loser.setText("GAME OVER. you lose :(");
@@ -480,8 +514,8 @@ void MainWindow::gameOver(){
 			cout<< "blarg" << endl;
 			str1 = "Score: " + str;}
 			QString final ="\n HIGH SCORES \n";
-			scoreFile.open("scores.txt", fstream::in | fstream::out);
 			cout << "you go girl" << endl;
+			scoreFile.open("scores.txt");
 			while(!scoreFile.eof()){
 				for(int j =0; j<5; j++){
 					string tempstr;
@@ -496,8 +530,8 @@ void MainWindow::gameOver(){
 				}
 				break;
 			}
+			scoreFile.close();
 			loser.setInformativeText(str1+final);
-		
 		QPushButton* q = new QPushButton("Quit Game");	
 		QPushButton* n = new QPushButton("New Game");
 		loser.addButton(n, QMessageBox::RejectRole);

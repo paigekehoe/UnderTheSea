@@ -33,6 +33,7 @@
 #include <QGraphicsPixmapItem>
 #include <iostream>
 #include <fstream>
+//#include <ifstream>
 #include <sstream>
 #include <string>
 #include "shark.h"
