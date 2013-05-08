@@ -32,6 +32,9 @@
 #include <QVector>
 #include <QGraphicsPixmapItem>
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 #include "shark.h"
 #include "tiki.h"
 #include "fire.h"
@@ -87,9 +90,9 @@ private:
 		/** Dockwidgets to be added to the top and bottom of the mainwindow */
 		QDockWidget *menuArea, *scoreArea, *titleArea;
 		/** QPushButtons to control gameplay - part of the menu, they function like their titles suggest */
-		QPushButton	*start, *pause, *stop, *quit;
+		QPushButton	*start, *pause, *stop, *quit, *scores_button;
 		/** QWidgets for the start screen - added to the scene in the beginning */
-		QWidget *menu, *welcome;
+		QWidget *menu, *welcome, *scores_widget;
 		/** the area in which the player must enter his or her name to play the game */
 		QLineEdit *player_name;
 		/** The Little Mermaid herself - you (or the player) - to be controlled by the user */
@@ -118,6 +121,8 @@ private:
 		bool game_in_play;
 		/** a boolean variable to tell if the start button has been pressed while a game is already being played */
 		bool repeat;
+		
+		bool firstGame;
 		/** QLinkedList to hold pointers to the Game Items that are on screen */
 		QLinkedList<GameItem*> on_screen;
 		/** adding a level to int level and displaying it on screen */
@@ -138,6 +143,8 @@ private:
 		long double boatVelY;
 		/** fireball's velocity */
 		long double fireVelY, fireVelX;
+		/** player's name */
+		std::string name;
 		
 signals:
 	/** signal emitted when lives=0, aka you are DEAD MEAT */
@@ -160,6 +167,8 @@ public slots:
 	void quitGame();
 	/** a function to restart the timer */
 	void resumeTime();
+	/** a function to display game high scorers */
+	void showScores();
 };
 
 

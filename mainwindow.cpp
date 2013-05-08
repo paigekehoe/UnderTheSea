@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 using namespace std;
 
+
 MainWindow::MainWindow()
 {		level=1;
 		score=0;
@@ -8,6 +9,7 @@ MainWindow::MainWindow()
 		lives=5;
 		repeat=false;
 		game_in_play =false;
+		firstGame=true;
 		scene = new QGraphicsScene(0, 0, WINDOW_MAX_X*2+100, WINDOW_MAX_Y*2+100);
 		//creating a new graphics scene
     view = new QGraphicsView();
@@ -29,16 +31,22 @@ MainWindow::MainWindow()
     createMenuArea();
     mainW->addDockWidget(Qt::BottomDockWidgetArea, menuArea);
     scene->addWidget(welcome);
-    welcome->move(250, 100);
+    welcome->move(250, 50);
     
     connect(start, SIGNAL(clicked()), this, SLOT(startGame()));
     connect(pause, SIGNAL(clicked()), this, SLOT(pauseGame()));
     connect(stop, SIGNAL(clicked()), this, SLOT(newGame()));
     connect(quit, SIGNAL(clicked()), this, SLOT(quitGame()));
 		connect(this, SIGNAL(death()), this, SLOT(gameOver()));
+		
 		connect(player_name, SIGNAL(returnPressed()), this, SLOT(startGame()));
 		delete welcome;
 		stopGame();
+		
+//		scoreFile.open("scores.txt");
+//		if(scoreFile.is_open()){
+//			cout << "file opened" << endl;
+//		}
 		}
 
 MainWindow::~MainWindow()
@@ -74,7 +82,7 @@ void MainWindow::createTitle(){
 void MainWindow::createMenuArea(){
 		menuArea = new QDockWidget(this);
 		QWidget *holder = new QWidget;	
-    start = new QPushButton("&Start");
+    start = new QPushButton("&Start/Restart");
    	start->setFixedHeight(40);
    	start->setFixedWidth(160);
     pause = new QPushButton("&Pause");
@@ -122,6 +130,7 @@ void MainWindow::createStartArea(){
 		welcome = new QWidget;
 		w = new QLabel(this);
 		i = new QLabel(this);
+		//scores_button=new QPushButton("Show High Scores");
 		const QPixmap welcome_screen("welcome.png");
 		w->setPixmap(welcome_screen);
 		const QPixmap instructions("instructions.png");
@@ -132,6 +141,8 @@ void MainWindow::createStartArea(){
 		layout->addWidget(w);
 		layout->addWidget(player_name);
 		layout->addWidget(i);
+		//layout->addWidget(scores_button);
+		//connect(scores_button, SIGNAL(clicked()), this, SLOT(showScores()));
 		welcome->setLayout(layout);
 		welcome->show();
 		
@@ -152,7 +163,8 @@ if(game_in_play==true){
 	startGame();
 	return;
 }
-
+	QPixmap back1("water1.jpg");
+  scene->setBackgroundBrush(back1.scaled(WINDOW_MAX_X*2+100, WINDOW_MAX_Y*2+100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	level=1;
 	lives=5;
 	score=0;
@@ -169,7 +181,7 @@ if(repeat==false){
 		return;
 		}
 	}
-	string name;
+	
 	QString temp =player_name->text();
 	name= temp.toStdString();
 
@@ -219,12 +231,14 @@ void MainWindow::handleTimer(){
 		fireVelX=1;
 	}
 	if(count==3200){
-			sharkVel=2;
+			sharkVel=1.5;
 		bubbleVelX=3;
 		bubbleVelY=3;
 		boatVelY=3;
 		fireVelY=1;
 		fireVelX=1;
+		QPixmap back2("water2.jpg");
+    scene->setBackgroundBrush(back2.scaled(WINDOW_MAX_X*2+100, WINDOW_MAX_Y*2+100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 		levelUp();
 		//emit level up
 		//set velocities
@@ -237,12 +251,14 @@ void MainWindow::handleTimer(){
 			scene->addItem(tiki);
 	}
 	if(count==5000){
-		sharkVel=3;
+		sharkVel=2;
 		bubbleVelX=4;
 		bubbleVelY=4;
 		boatVelY=4;
 		fireVelY=2;
 		fireVelX=2;
+		QPixmap back3("water3.jpg");
+    scene->setBackgroundBrush(back3.scaled(WINDOW_MAX_X*2+100, WINDOW_MAX_Y*2+100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 		levelUp();
 	//reset velocities
 	//tiki man appears			
@@ -250,12 +266,14 @@ void MainWindow::handleTimer(){
 	//bubbles more often
 	}
 	if(count==6000){
-		sharkVel=7;
+		sharkVel=4;
 		bubbleVelX=3;
 		bubbleVelY=3;
 		boatVelY=5;
 		fireVelY=5;
 		fireVelX=5;
+		QPixmap back4("water4.jpg");
+    scene->setBackgroundBrush(back4.scaled(WINDOW_MAX_X*2+100, WINDOW_MAX_Y*2+100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 		levelUp();
 		//velocity increases on boats, sharks, and bullets
 	}	
@@ -292,7 +310,7 @@ void MainWindow::handleTimer(){
 				bt->setVel(boatVelY);
 				break;}
 			case 4:{
-				Bubble *b1 = new Bubble(bubble_pic, 700, rand()%450);
+				Bubble *b1 = new Bubble(bubble_pic, 700, rand()%400+40);
 				scene->addItem(b1);
 				on_screen.push_back(b1);
 				b1->setVel(bubbleVelX, bubbleVelY);
@@ -409,20 +427,86 @@ void MainWindow::levelUp(){
 }
 
 void MainWindow::gameOver(){
-	QMessageBox loser;
-	loser.setText("GAME OVER. you lose :(");
-	QString str = QString::number(score);
-	QString str1 = "Score: " + str;
-	loser.setInformativeText(str1);
-	QPushButton* q = new QPushButton("Quit Game");
-	QPushButton* n = new QPushButton("New Game");
-	loser.addButton(n, QMessageBox::RejectRole);
-	loser.addButton(q, QMessageBox::RejectRole);
-	loser.setDefaultButton(q);
-	connect(q, SIGNAL(clicked()), this, SLOT(quitGame()));
-	connect(n, SIGNAL(clicked()), this, SLOT(newGame()));
-	loser.exec();
-}
+	// the high score file
+	cout << name << endl;
+	int i=0;
+	fstream scoreFile("scores.txt");
+	if(firstGame==true){
+		scoreFile.open("scores.txt", fstream::in | fstream::out);
+		cout << "wowzers" << endl;
+		scoreFile<< name;
+		cout << name << endl;
+		scoreFile<< "\n";
+		scoreFile<< score;
+		cout << score << endl;
+		firstGame=false;
+	}
+	else{
+		cout << "hi you're dead" << endl;
+		bool added=false;
+		scoreFile.open("scores.txt", fstream::in | fstream::out);
+		cout << "1" << endl;
+			while(!scoreFile.eof()){
+				cout << "1.5" << endl;
+				string tempstring;
+				string tempscore;
+				getline(scoreFile, tempstring);
+				getline(scoreFile, tempscore);
+				int intScore = atoi(tempscore.c_str());
+				if(intScore<score){
+						scoreFile<<name << "\n" << score;
+						added=true;	
+						break;
+				}
+				i++;
+				cout << "2" << endl;
+			}
+	
+			if(added==false){
+					scoreFile<<name << " " << score;
+					cout << " 2.5" << endl;
+					}
+					
+			}
+			scoreFile.close();//necessary?
+		cout << "5" << endl;
+		QMessageBox loser;
+		loser.setText("GAME OVER. you lose :(");
+		QString str = QString::number(score);
+		QString str1;
+		if(i<5){
+			str1 = "NEW HIGH SCORE: " + str; }
+		else{
+			cout<< "blarg" << endl;
+			str1 = "Score: " + str;}
+			QString final ="\n HIGH SCORES \n";
+			scoreFile.open("scores.txt", fstream::in | fstream::out);
+			cout << "you go girl" << endl;
+			while(!scoreFile.eof()){
+				for(int j =0; j<5; j++){
+					string tempstr;
+					string tempsc;
+					cout << "AHH" << endl;
+					getline(scoreFile,tempstr);
+					getline(scoreFile, tempsc);
+					if(tempstr==""||tempsc==""){
+						break;
+					}
+					final = final+ "\n" + QString::fromStdString(tempstr) + "  " + QString::fromStdString(tempsc);
+				}
+				break;
+			}
+			loser.setInformativeText(str1+final);
+		
+		QPushButton* q = new QPushButton("Quit Game");	
+		QPushButton* n = new QPushButton("New Game");
+		loser.addButton(n, QMessageBox::RejectRole);
+		loser.addButton(q, QMessageBox::RejectRole);
+		loser.setDefaultButton(q);
+		connect(q, SIGNAL(clicked()), this, SLOT(quitGame()));
+		connect(n, SIGNAL(clicked()), this, SLOT(newGame()));
+		loser.exec();
+	}
 
 void MainWindow::pauseGame(){
 	if(game_in_play==false){
@@ -441,7 +525,6 @@ void MainWindow::pauseGame(){
 	// | QMessageBox::New);
 	pause.setDefaultButton(r);
 	connect(q, SIGNAL(clicked()), this, SLOT(quitGame()));
-	// CONNECT START GAME
 	connect(n, SIGNAL(clicked()), this, SLOT(newGame()));
 	connect(r, SIGNAL(clicked()), this, SLOT(resumeTime()));
 	pause.exec();
@@ -453,7 +536,7 @@ void MainWindow::stopGame(){
 	scene->clear();}
 	createStartArea();
 	scene->addWidget(welcome);
-	welcome->move(250, 100);
+	welcome->move(250, 50);
 	game_in_play=false;
 }
 
@@ -483,10 +566,57 @@ void MainWindow::keyPressEvent(QKeyEvent *k){
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *e){
-	
 	return;
 }
 
 void MainWindow::resumeTime(){
 	timer->start();
 }
+
+void MainWindow::showScores(){}/*
+	cout << "in show scores" << endl;
+	scene->clear();
+	cout << "meg" << endl;
+	//delete welcome;
+	cout << "blard" << endl;
+		QVBoxLayout * layout = new QVBoxLayout;
+		scores_widget = new QWidget;
+		QLabel *scoreTitle = new QLabel(this);
+		QPushButton *back =new QPushButton("back");
+		connect(back, SIGNAL(clicked()), this, SLOT(stopGame()));
+		const QPixmap scores_pic("scores.png");
+		scoreTitle->setPixmap(scores_pic);
+		scoreTitle->setAlignment(Qt::AlignCenter | Qt::AlignCenter);
+		layout->addWidget(scoreTitle);
+		scoreFile.open("scores.txt");
+		cout << "opened" << endl;
+		if(firstGame!=true){
+			while(scoreFile.good()){
+				cout << " hey hey hey I am in the file" << endl;
+				for(int i=0; i<5; i++){
+					cout << " Iteration " << i << endl;
+					string tempName;
+					int tempScore;
+					scoreFile>>tempName;
+					scoreFile>>tempScore;
+					cout << tempName;
+					cout << tempScore;
+					QLabel* temp = new QLabel(this);
+					stringstream conversion;
+					conversion << tempScore;
+					string output = tempName + "  " + conversion.str();
+					QString qstr = QString::fromStdString(output);
+					temp->setText(qstr);
+					layout->addWidget(temp);
+				}
+			}
+		}
+		cout << " mAHH" << endl;
+		//layout->addWidget(scores_button);
+		scores_widget->setLayout(layout);
+		cout << "hey" << endl;
+		scores_widget->show();
+		cout << "woow" << endl;
+		scene->addWidget(scores_widget);
+		cout << " gaga " << endl;
+}*/
