@@ -1,37 +1,32 @@
-# Game - Programming Assignments Private Repository
-### Student Information
-  + Name: Paige Kehoe
-  + USC Email: pkehoe@usc.edu
-  + USC ID: 7810442065
+# UNDER THE SEA GAME
+### Author
+  + Paige Kehoe
+  + pkehoe@usc.edu
 
 ### Game Information
   + Game Name: Under the Sea
   + Game Description: A fun interactive mermaid game in which you try to survive and avoid the monsters!
   + [Game Design Doc](GameDesignDoc.md)
 
-
-### Compile & Run Instructions
+## Compile & Run Instructions
 Use the following procedure to compile and run the code:
-
-#Compile Instructions
+###Compile Instructions
 ```
 qmake -project
 qmake
 make
 ```
-
-#Doxygen Instructions
+###Doxygen Instructions
 
 ```
 doxygen -g config.txt
 doxygen config.txt
 ```
-
-#Command to run
+###Command to run
 
 ```
 ./UnderTheSea
 ```
 
-License can be found in 
-  + [License Doc](LICENSE)
+###License
+  + [License](LICENSE)
