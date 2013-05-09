@@ -11,15 +11,27 @@
 
 
 ### Compile & Run Instructions
-The grader should use the following procedure to compile and run the code:
-```shell
+Use the following procedure to compile and run the code:
+
 #Compile Instructions
+```
 qmake -project
 qmake
 make
+```
+
 #Doxygen Instructions
+
+```
 doxygen -g config.txt
 doxygen config.txt
-#Command to run
-./game_pkehoe
 ```
+
+#Command to run
+
+```
+./UnderTheSea
+```
+
+License can be found in 
+  + [License Doc](LICENSE)
